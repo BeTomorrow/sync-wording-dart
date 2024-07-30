@@ -1,0 +1,21 @@
+name: sync_wording_dart
+version: 0.1.0
+description: A command-line application to sync GoogleSheet wordings.
+#repository: https://....
+#resolution: workspace
+
+environment:
+  sdk: ^3.3.0
+
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+  yaml: ^3.1.2
+  http: ^1.2.2
+  googleapis_auth: ^1.6.0
+  args: ^2.5.0
+  gsheets: ^0.5.0
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0

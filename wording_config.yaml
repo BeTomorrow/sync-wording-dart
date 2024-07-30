@@ -1,0 +1,17 @@
+credentials:
+  client_id: "1309740887-6u609jvssi5c2e56vd5n5dc4drgsc906.apps.googleusercontent.com"
+  client_secret: "bEK0Dy-9Y5doRvjfx_AtH0rS"
+
+sheetId: "1g4F29TlC1TejgVgEdcKP41-wUz1kVGRNZjva8lZ0WpQ"
+sheetNames: ["my_mobile_app", "module_2"]
+output_dir: "outputs"
+languages:
+  fr:
+    column: 2
+    # column : 1='A', 2='B', ...
+  en:
+    column: 3
+
+gen_l10n:
+  auto_call: true
+  with_fvm: true

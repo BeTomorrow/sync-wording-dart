@@ -1,0 +1,16 @@
+class PlaceholderCharac {
+  final String placeholder;
+  final String type;
+  final String? format;
+
+  PlaceholderCharac(this.placeholder, this.type, this.format);
+}
+
+class WordingEntry {
+  final String value;
+  final List<PlaceholderCharac>? placeholderCharacs;
+
+  WordingEntry(this.value, this.placeholderCharacs);
+}
+
+typedef WordingResult = Map<String, Map<String, WordingEntry>>;
