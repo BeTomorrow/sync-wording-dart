@@ -108,7 +108,3 @@ gen_l10n:
   auto_call: true
   with_fvm: true
 ```
-
-## Note
-
-This tool includes Google Projet credentials for convenience use but you can setup your own projet. Create new project in [GCP Console](https://console.cloud.google.com) then enable **Drive API** in _API library_ and create and download credentials.
