@@ -13,7 +13,7 @@ You can find a sample sheet [here](https://docs.google.com/spreadsheets/d/18Zf_X
 
 ## Installation
 
-- Install sync-wording as dev dependencies `flutter pub add dev:@betomorrow/sync-wording-dart`
+- Install sync-wording as dev dependencies `flutter pub add dev:sync_wording`
 - Create wording config file named `wording_config.yaml` at project root location.
 
 ```yaml
@@ -31,7 +31,7 @@ languages:
     # column : 1='A', 2='B', ...
 ```
 
-- Then run `dart run sync-wording-dart`
+- Then run `dart run sync_wording`
 
 It will ask you to grant access on Google Sheet
 

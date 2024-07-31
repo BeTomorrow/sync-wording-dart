@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:sync_wording_dart/wording.dart';
+import 'package:sync_wording/wording.dart';
 
 const _placeholderRegex = r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
 const _separator = "|";

@@ -1,4 +1,4 @@
-name: sync_wording_dart
+name: sync_wording
 version: 0.1.0
 description: A command-line application to sync GoogleSheet wordings.
 repository: https://github.com/BeTomorrow/sync-wording-dart

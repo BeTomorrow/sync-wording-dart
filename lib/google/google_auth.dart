@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
-import 'package:sync_wording_dart/config/wording_config.dart';
+import 'package:sync_wording/config/wording_config.dart';
 
 const _scopes = [
   "https://www.googleapis.com/auth/drive",

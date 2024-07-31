@@ -1,4 +1,4 @@
-import 'package:sync_wording_dart/wording.dart';
+import 'package:sync_wording/wording.dart';
 
 sealed class PlaceholderExporter {
   String get _type;

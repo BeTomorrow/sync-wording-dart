@@ -1,5 +1,5 @@
-import 'package:sync_wording_dart/spreadsheet_converter/wording_parser.dart';
-import 'package:sync_wording_dart/wording.dart';
+import 'package:sync_wording/spreadsheet_converter/wording_parser.dart';
+import 'package:sync_wording/wording.dart';
 import 'package:test/test.dart';
 
 void main() {
