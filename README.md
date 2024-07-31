@@ -21,7 +21,7 @@ credentials:
   client_id: "your.google.client.id"
   client_secret: "your.google.client.secret"
 
-sheetId: "18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4"
+sheetId: "your.sheet.id"
 output_dir: "lib/localizations"
 languages:
   en:
@@ -48,8 +48,6 @@ Please open the following address in your browser:
 [Authorization Sample]
 
 It will update wording files : `${output_dir}/intl_en.arb` and `${output_dir}/intl_fr.arb`
-
-If `gen_l10n:auto_call` is `true`, the program will automatically execute `flutter gen_l10n`, or `fvm flutter gen_l10n` if `gen_l10n:with_fvm` is `true`, to generate localization classes (`l10n.yaml` file is required)
 
 ## Placeholders
 
@@ -146,7 +144,7 @@ credentials:
   client_secret: "your.google.client.secret"
   credentials_file: "credentials.json"    # (Optional) defaults ".google_credentials.json"
 
-sheetId: "18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4"
+sheetId: "your.sheet.id"
 output_dir: "lib/localizations"
 sheetNames: ["Commons", "MyApp"]          # (Optional)
 sheet_start_index: 2                      # (Optional) defaults 2
@@ -164,5 +162,5 @@ validation:                               # (Optional)
 
 gen_l10n:                                 # (Optional)
   auto_call: true
-  with_fvm: true
+  with_fvm: true                          # (Optional)
 ```
