@@ -11,7 +11,10 @@ languages:
     # column : 1='A', 2='B', ...
   en:
     column: 3
+validation:
+  column: 4
+  expected: "OK"
 
-gen_l10n:
-  auto_call: true
-  with_fvm: true
+#gen_l10n:
+#  auto_call: true
+#  with_fvm: true

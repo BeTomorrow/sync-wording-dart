@@ -30,7 +30,7 @@ Future<void> main(List<String> arguments) async {
     final client = await GoogleAuth().authenticate(config.credentials, httpClient);
     final spreadsheet = await XLSXDrive(client).getSpreadsheet(config.sheetId);
 
-    final result = await XLSXConverter().convert(spreadsheet, config.sheetNames, config.languages);
+    final result = await XLSXConverter().convert(spreadsheet, config);
     httpClient.close();
 
     final exporter = ARBWordingExporter();

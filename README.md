@@ -103,6 +103,9 @@ languages:
   fr:
     column: 4
     # column : 1='A', 2='B', ...
+validation:
+  column: 5
+  expected: "OK"
 
 gen_l10n:
   auto_call: true
