@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:gsheets/gsheets.dart';
 import 'package:sync_wording_dart/config/wording_config.dart';
 import 'package:sync_wording_dart/spreadsheet_converter/validator/validator.dart';
@@ -33,7 +35,7 @@ class XLSXConverter {
 
     WordingResult result = {};
     if (worksheet.rowCount < 2) {
-      print("Not enough data in worksheet '${worksheet.title}' !");
+      stdout.writeln("Not enough data in worksheet '${worksheet.title}' !");
       return result;
     }
 

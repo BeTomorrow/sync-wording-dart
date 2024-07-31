@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:gsheets/gsheets.dart';
 
@@ -11,7 +13,7 @@ class XLSXDrive {
       final spreadsheet = await _gsheets.spreadsheet(spreadsheetId);
       return spreadsheet;
     } catch (e) {
-      print("XLSXDrive error : $e");
+      stderr.writeln("XLSXDrive error : $e");
       rethrow;
     }
   }

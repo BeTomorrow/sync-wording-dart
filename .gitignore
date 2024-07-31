@@ -42,3 +42,5 @@ app.*.map.json
 
 .google_access_token.json
 outputs/
+l10n.yaml
+wording_config.yaml

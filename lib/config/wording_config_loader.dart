@@ -54,7 +54,7 @@ class WordingConfigLoader {
         genL10nConfig,
       );
     } catch (e) {
-      print("Unable to read config file '$configFile' : $e");
+      stderr.writeln("Unable to read config file '$configFile' : $e");
       rethrow;
     }
   }

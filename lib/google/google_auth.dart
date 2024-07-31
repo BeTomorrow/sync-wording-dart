@@ -23,14 +23,14 @@ class GoogleAuth {
   Future<AutoRefreshingAuthClient> _requestUserConsentedClient(CredentialsConfig config, http.Client httpClient) async {
     try {
       final client = await clientViaUserConsent(ClientId(config.clientId, config.clientSecret), _scopes, (url) {
-        print('Please go to the following URL and grant access:');
-        print('  => $url');
-        print('');
+        stdout.writeln('Please go to the following URL and grant access:');
+        stdout.writeln('  => $url');
+        stdout.writeln('');
       }, baseClient: httpClient);
       await _writeCredentials(config, client.credentials);
       return client;
     } catch (e) {
-      print("Get AccessCredentials error : $e");
+      stderr.write("Get AccessCredentials error : $e");
       rethrow;
     }
   }
@@ -42,7 +42,7 @@ class GoogleAuth {
         final jsonStr = await file.readAsString();
         return AccessCredentials.fromJson(jsonDecode(jsonStr));
       } catch (e) {
-        print("Error reading '${config.credentialsFile}' => delete file");
+        stdout.writeln("Error reading '${config.credentialsFile}' => delete file");
         await file.delete();
       }
     }
@@ -53,9 +53,9 @@ class GoogleAuth {
     final file = File(config.credentialsFile);
     try {
       await file.writeAsString(jsonEncode(credentials.toJson()));
-      print("Token stored to '${config.credentialsFile}'");
+      stdout.writeln("Token stored to '${config.credentialsFile}'");
     } catch (e) {
-      print("Error writing '${config.credentialsFile}' file : $e");
+      stderr.writeln("Error writing '${config.credentialsFile}' file : $e");
     }
   }
 }
