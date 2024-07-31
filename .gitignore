@@ -39,6 +39,7 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+.fvmrc
 
 .google_access_token.json
 outputs/
