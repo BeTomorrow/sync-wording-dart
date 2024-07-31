@@ -9,7 +9,8 @@ const _placeholdersKey = "placeholders";
 
 class ARBWordingExporter extends WordingExporter {
   @override
-  Future<void> export(String locale, Map<String, WordingEntry> wordingEntries, String outputFile) async {
+  Future<void> export(String locale, Map<String, WordingEntry> wordingEntries,
+      String outputFile) async {
     final Map<String, dynamic> translations = {"@@locale": locale};
     for (final wording in wordingEntries.entries) {
       _exportWording(translations, wording.key, wording.value);
@@ -43,7 +44,8 @@ class ARBWordingExporter extends WordingExporter {
   ///             }
   ///         }
   ///     }
-  void _exportWording(Map<String, dynamic> translations, String key, WordingEntry entry) {
+  void _exportWording(
+      Map<String, dynamic> translations, String key, WordingEntry entry) {
     translations[key] = entry.value;
 
     final characs = entry.placeholderCharacs;
@@ -51,7 +53,8 @@ class ARBWordingExporter extends WordingExporter {
       final placeholderMap = {};
 
       for (final charac in characs) {
-        final characMap = PlaceholderExporter.forType(charac.type).export(charac);
+        final characMap =
+            PlaceholderExporter.forType(charac.type).export(charac);
         placeholderMap[charac.placeholder] = characMap;
       }
 

@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:sync_wording/wording.dart';
 
-const _placeholderRegex = r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
+const _placeholderRegex =
+    r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
 const _separator = "|";
 
 class WordingParser {
@@ -24,7 +25,8 @@ class WordingParser {
           if (pipeIndex != -1) {
             final placeholder = matchContent.substring(0, pipeIndex);
 
-            value = value.replaceRange(match.start, match.end, "{$placeholder}");
+            value =
+                value.replaceRange(match.start, match.end, "{$placeholder}");
 
             final typeAndFormat = matchContent.substring(pipeIndex + 1);
             var type = typeAndFormat;

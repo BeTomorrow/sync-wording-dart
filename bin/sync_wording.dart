@@ -15,8 +15,18 @@ Future<void> main(List<String> arguments) async {
     httpClient = http.Client();
 
     final parser = ArgParser()
-      ..addOption("config", abbr: "c", defaultsTo: "wording_config.yaml", help: "Path to config file")
-      ..addFlag('help', abbr: 'h', help: 'Provide usage instruction', negatable: false);
+      ..addOption(
+        "config",
+        abbr: "c",
+        defaultsTo: "wording_config.yaml",
+        help: "Path to config file",
+      )
+      ..addFlag(
+        'help',
+        abbr: 'h',
+        help: 'Provide usage instruction',
+        negatable: false,
+      );
 
     ArgResults argResults = parser.parse(arguments);
 
@@ -25,9 +35,11 @@ Future<void> main(List<String> arguments) async {
       exit(0);
     }
 
-    final config = await WordingConfigLoader().loadConfiguration(argResults["config"]);
+    final config =
+        await WordingConfigLoader().loadConfiguration(argResults["config"]);
 
-    final client = await GoogleAuth().authenticate(config.credentials, httpClient);
+    final client =
+        await GoogleAuth().authenticate(config.credentials, httpClient);
     final spreadsheet = await XLSXDrive(client).getSpreadsheet(config.sheetId);
 
     final result = await XLSXConverter().convert(spreadsheet, config);
@@ -35,7 +47,8 @@ Future<void> main(List<String> arguments) async {
 
     final exporter = ARBWordingExporter();
     for (final locale in result.keys) {
-      await exporter.export(locale, result[locale]!, "${config.outputDir}/intl_$locale.arb");
+      await exporter.export(
+          locale, result[locale]!, "${config.outputDir}/intl_$locale.arb");
     }
 
     if (config.genL10n.autoCall) {

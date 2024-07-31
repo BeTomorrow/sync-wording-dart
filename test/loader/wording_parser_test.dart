@@ -40,7 +40,8 @@ void main() {
     test("type and format placeholder", () {
       final parser = WordingParser();
 
-      final WordingEntry result = parser.parse("It's {date|DateTime|dd/MM/yyyy:hh'h'mm'm'ss}");
+      final WordingEntry result =
+          parser.parse("It's {date|DateTime|dd/MM/yyyy:hh'h'mm'm'ss}");
 
       expect(result.value, "It's {date}");
       expect(result.placeholderCharacs, isNotNull);
@@ -53,8 +54,8 @@ void main() {
     test("multiple placeholders", () {
       final parser = WordingParser();
 
-      final WordingEntry result =
-          parser.parse("Hello {user}. It's {meteo|String} at {date|DateTime|dd/MM/yyyy : hh'h'mm'm'ss}");
+      final WordingEntry result = parser.parse(
+          "Hello {user}. It's {meteo|String} at {date|DateTime|dd/MM/yyyy : hh'h'mm'm'ss}");
 
       expect(result.value, "Hello {user}. It's {meteo} at {date}");
       expect(result.placeholderCharacs, isNotNull);
@@ -70,18 +71,22 @@ void main() {
     test("simple plural", () {
       final parser = WordingParser();
 
-      final WordingEntry result = parser.parse("{days, plural, zero{} one{1 day} other{many days}}");
+      final WordingEntry result =
+          parser.parse("{days, plural, zero{} one{1 day} other{many days}}");
 
-      expect(result.value, "{days, plural, zero{} one{1 day} other{many days}}");
+      expect(
+          result.value, "{days, plural, zero{} one{1 day} other{many days}}");
       expect(result.placeholderCharacs, null);
     });
 
     test("placeholder in plural", () {
       final parser = WordingParser();
 
-      final WordingEntry result = parser.parse("{days, plural, zero{} one{1 day} other{{days|int} days}}");
+      final WordingEntry result = parser
+          .parse("{days, plural, zero{} one{1 day} other{{days|int} days}}");
 
-      expect(result.value, "{days, plural, zero{} one{1 day} other{{days} days}}");
+      expect(
+          result.value, "{days, plural, zero{} one{1 day} other{{days} days}}");
       expect(result.placeholderCharacs, isNotNull);
       expect(result.placeholderCharacs!.length, 1);
       expect(result.placeholderCharacs![0].placeholder, "days");

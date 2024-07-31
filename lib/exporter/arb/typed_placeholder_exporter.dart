@@ -3,7 +3,9 @@ import 'package:sync_wording/wording.dart';
 sealed class PlaceholderExporter {
   String get _type;
 
-  static final _exporters = <PlaceholderExporter>[_DateTimePlaceholderExporter()];
+  static final _exporters = <PlaceholderExporter>[
+    _DateTimePlaceholderExporter()
+  ];
   static final _defaultExporter = _DefaultPlaceholderExporter();
 
   Map<String, dynamic> export(PlaceholderCharac placeholderCharac);

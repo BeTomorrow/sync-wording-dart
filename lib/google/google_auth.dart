@@ -12,17 +12,23 @@ const _scopes = [
 ];
 
 class GoogleAuth {
-  Future<AutoRefreshingAuthClient> authenticate(CredentialsConfig config, http.Client httpClient) async {
+  Future<AutoRefreshingAuthClient> authenticate(
+      CredentialsConfig config, http.Client httpClient) async {
     final storedCredentials = await _readCredentials(config);
     if (storedCredentials != null) {
-      return autoRefreshingClient(ClientId(config.clientId, config.clientSecret), storedCredentials, httpClient);
+      return autoRefreshingClient(
+          ClientId(config.clientId, config.clientSecret),
+          storedCredentials,
+          httpClient);
     }
     return await _requestUserConsentedClient(config, httpClient);
   }
 
-  Future<AutoRefreshingAuthClient> _requestUserConsentedClient(CredentialsConfig config, http.Client httpClient) async {
+  Future<AutoRefreshingAuthClient> _requestUserConsentedClient(
+      CredentialsConfig config, http.Client httpClient) async {
     try {
-      final client = await clientViaUserConsent(ClientId(config.clientId, config.clientSecret), _scopes, (url) {
+      final client = await clientViaUserConsent(
+          ClientId(config.clientId, config.clientSecret), _scopes, (url) {
         stdout.writeln('Please go to the following URL and grant access:');
         stdout.writeln('  => $url');
         stdout.writeln('');
@@ -42,14 +48,16 @@ class GoogleAuth {
         final jsonStr = await file.readAsString();
         return AccessCredentials.fromJson(jsonDecode(jsonStr));
       } catch (e) {
-        stdout.writeln("Error reading '${config.credentialsFile}' => delete file");
+        stdout.writeln(
+            "Error reading '${config.credentialsFile}' => delete file");
         await file.delete();
       }
     }
     return null;
   }
 
-  Future<void> _writeCredentials(CredentialsConfig config, AccessCredentials credentials) async {
+  Future<void> _writeCredentials(
+      CredentialsConfig config, AccessCredentials credentials) async {
     final file = File(config.credentialsFile);
     try {
       await file.writeAsString(jsonEncode(credentials.toJson()));

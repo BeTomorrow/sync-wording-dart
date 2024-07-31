@@ -6,7 +6,8 @@ import 'package:gsheets/gsheets.dart';
 class XLSXDrive {
   final GSheets _gsheets;
 
-  XLSXDrive(AutoRefreshingAuthClient client) : _gsheets = GSheets.withClient(client);
+  XLSXDrive(AutoRefreshingAuthClient client)
+      : _gsheets = GSheets.withClient(client);
 
   Future<Spreadsheet> getSpreadsheet(String spreadsheetId) async {
     try {

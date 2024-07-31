@@ -6,8 +6,6 @@ sealed class Validator {
 
   bool isValid(List<String> row);
 
-  Validator._();
-
   factory Validator.get(ValidationConfig config) {
     final column = config.column;
     final expected = config.expected;

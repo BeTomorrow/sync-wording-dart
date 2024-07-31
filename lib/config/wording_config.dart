@@ -21,7 +21,8 @@ class ValidationConfig {
 
   factory ValidationConfig.always() => ValidationConfig._(null, null);
 
-  factory ValidationConfig.withExpected(int column, String expected) => ValidationConfig._(column, expected);
+  factory ValidationConfig.withExpected(int column, String expected) =>
+      ValidationConfig._(column, expected);
 }
 
 class GenL10nConfig {

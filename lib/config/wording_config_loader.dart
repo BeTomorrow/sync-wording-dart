@@ -24,20 +24,24 @@ class WordingConfigLoader {
       );
 
       final sheetNamesYamlData = yamlData["sheetNames"];
-      final sheetNames = sheetNamesYamlData != null ? List<String>.from(sheetNamesYamlData) : <String>[];
+      final sheetNames = sheetNamesYamlData != null
+          ? List<String>.from(sheetNamesYamlData)
+          : <String>[];
 
       final languageMap = yamlData["languages"] as Map<String, dynamic>;
 
       final validationColumn = yamlData["validation"]?["column"];
       final validationExpected = yamlData["validation"]?["expected"];
-      final validationConfig = (validationColumn != null && validationExpected != null)
+      final validationConfig = (validationColumn != null &&
+              validationExpected != null)
           ? ValidationConfig.withExpected(validationColumn, validationExpected)
           : ValidationConfig.always();
 
       final gen10nYamlData = yamlData["gen_l10n"];
       GenL10nConfig genL10nConfig = gen10nYamlData == null
           ? GenL10nConfig(false)
-          : GenL10nConfig(gen10nYamlData["auto_call"], gen10nYamlData["with_fvm"] ?? false);
+          : GenL10nConfig(
+              gen10nYamlData["auto_call"], gen10nYamlData["with_fvm"] ?? false);
 
       return WordingConfig(
         credentialsConfig,

@@ -9,7 +9,8 @@ import 'package:sync_wording/wording.dart';
 class XLSXConverter {
   final _parser = WordingParser();
 
-  Future<WordingResult> convert(Spreadsheet spreadsheet, WordingConfig config) async {
+  Future<WordingResult> convert(
+      Spreadsheet spreadsheet, WordingConfig config) async {
     final sheetNames = config.sheetNames;
 
     WordingResult result = {};
@@ -19,7 +20,8 @@ class XLSXConverter {
 
     for (final worksheet in spreadsheet.sheets) {
       if (sheetNames.isEmpty || sheetNames.contains(worksheet.title)) {
-        WordingResult worksheetResult = await _convertWorksheet(worksheet, config);
+        WordingResult worksheetResult =
+            await _convertWorksheet(worksheet, config);
 
         for (final l in worksheetResult.keys) {
           result[l]!.addAll(worksheetResult[l]!);
@@ -29,7 +31,8 @@ class XLSXConverter {
     return result;
   }
 
-  Future<WordingResult> _convertWorksheet(Worksheet worksheet, WordingConfig config) async {
+  Future<WordingResult> _convertWorksheet(
+      Worksheet worksheet, WordingConfig config) async {
     final languages = config.languages;
     final validator = Validator.get(config.validation);
 
@@ -47,7 +50,8 @@ class XLSXConverter {
       final allRows = await values.allRows(fromRow: 2);
 
       for (final row in allRows) {
-        _addWording(languageResult, row, config.keyColumn, languageConfig.column, validator);
+        _addWording(languageResult, row, config.keyColumn,
+            languageConfig.column, validator);
       }
     }
 
