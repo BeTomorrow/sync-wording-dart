@@ -11,7 +11,7 @@ You can find a sample sheet [here](https://docs.google.com/spreadsheets/d/18Zf_X
 | user.firstname_title | Firstname | Prénom |
 | user.lastname_title  | Lastname  | Nom    |
 
-## Integration to your project
+## Installation
 
 - Install sync-wording as dev dependencies `flutter pub add dev:@betomorrow/sync-wording-dart`
 - Create wording config file named `wording_config.yaml` at project root location.
@@ -22,8 +22,7 @@ credentials:
   client_secret: "your.google.client.secret"
 
 sheetId: "18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4"
-sheetNames: ["Commons", "MyApp"]
-output_dir: "outputs"
+output_dir: "lib/localizations"
 languages:
   en:
     column: 3
@@ -70,7 +69,65 @@ This also works with plurals for example:
 {days, plural, zero{today} one{tomorrow} other{in {days|int} days}}
 ```
 
-## Wording validation (Will come soon)
+## Configuration options
+
+### Sheet names
+
+If your GoogleSheet document contains many sheets, all the sheets will be considered as valid input sheet.
+If you only want to use a subset of these sheets, you can specify the sheet-names needed as input
+
+```yaml
+sheetNames: ["Commons", "MyApp"]
+```
+
+### Key column
+
+By default the column containing the translation keys is the first column (column 'A'), but you can specify another key column if your GoogleSheet document has another format.
+
+```yaml
+key_column: 2  # default : 1
+```
+
+### Starting row for values
+
+By default, the first row is considered as a header, valid keys and translations start at the second row.
+If you GoogleSheet document is not in this format, you can specify the row from which translations will be taken in account:
+
+```yaml
+sheet_start_index: 3  # default : 2
+```
+
+### Wording validation
+
+In your google sheet, you can add column indicate that it's a valid translation
+
+| Keys                 | English   | French | Validation |
+| -------------------- | --------- | ------ |------------|
+| user.firstname_title | Firstname | Prénom | OK         |
+| user.lastname_title  | Lastname  | Nom    | NOT OK     |
+
+Then add this to your configuration file:
+
+```yaml
+validation:
+  column: 5
+  expected: "OK"
+```
+
+If no `validation` specified, everything is considered as valid.
+
+## Localization classes generation
+
+Executing this program will generate the `.arb` localization files.
+But it can go further:
+If your Flutter project is configured to use localizations, with a proper `l10n.yaml` file, this program can automatically generate the localization dart classes by running by itself the `flutter gen-l10n` command, or even `fvm flutter gen-l10n` if you chose fvm as flutter version manager for your project.
+You can simply add this to your `wording_config.yaml` file:
+
+```yaml
+gen_l10n:
+  auto_call: true
+  with_fvm: true
+```
 
 ## Options
 
@@ -81,28 +138,31 @@ This tools support 2 options
 
 ## Complete Configuration
 
+Complete example of a `wording_config.yaml` file:
+
 ```yaml
 credentials:
   client_id: "your.google.client.id"
   client_secret: "your.google.client.secret"
-  credentials_file: ".google_credentials.json"
+  credentials_file: "credentials.json"    # (Optional) defaults ".google_credentials.json"
 
 sheetId: "18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4"
-sheetNames: ["Commons", "MyApp"]
-output_dir: "outputs"
-sheet_start_index: 2
-key_column: 1
+output_dir: "lib/localizations"
+sheetNames: ["Commons", "MyApp"]          # (Optional)
+sheet_start_index: 2                      # (Optional) defaults 2
+
+# column values : 1='A', 2='B', ...
+key_column: 1                             # (Optional) defaults 1
 languages:
   en:
     column: 3
   fr:
     column: 4
-    # column : 1='A', 2='B', ...
-validation:
+validation:                               # (Optional)
   column: 5
   expected: "OK"
 
-gen_l10n:
+gen_l10n:                                 # (Optional)
   auto_call: true
   with_fvm: true
 ```
