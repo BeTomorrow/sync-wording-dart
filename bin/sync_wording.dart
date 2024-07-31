@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
-import 'package:sync_wording_dart/config/wording_config_loader.dart';
-import 'package:sync_wording_dart/exporter/arb/arb_wording_exporter.dart';
-import 'package:sync_wording_dart/google/google_auth.dart';
-import 'package:sync_wording_dart/google/xlsx_drive.dart';
-import 'package:sync_wording_dart/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
+import 'package:sync_wording/config/wording_config_loader.dart';
+import 'package:sync_wording/exporter/arb/arb_wording_exporter.dart';
+import 'package:sync_wording/google/google_auth.dart';
+import 'package:sync_wording/google/xlsx_drive.dart';
+import 'package:sync_wording/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
 
 Future<void> main(List<String> arguments) async {
   late final http.Client httpClient;
