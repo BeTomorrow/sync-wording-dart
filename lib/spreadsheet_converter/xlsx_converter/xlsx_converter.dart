@@ -43,19 +43,24 @@ class XLSXConverter {
 
       final values = worksheet.values;
       final allRows = await values.allRows(fromRow: 2);
-      final filledRows = allRows.takeWhile((row) => row[0].isNotEmpty);
 
-      for (final row in filledRows) {
-        _addWording(languageResult, row, languageConfig.column, validator);
+      for (final row in allRows) {
+        _addWording(languageResult, row, config.keyColumn, languageConfig.column, validator);
       }
     }
 
     return result;
   }
 
-  void _addWording(Map<String, WordingEntry> result, List<String> row, int valueColumn, Validator validator) {
+  void _addWording(
+    Map<String, WordingEntry> result,
+    List<String> row,
+    int keyColumn,
+    int valueColumn,
+    Validator validator,
+  ) {
     if (validator.isValid(row)) {
-      final key = row[0];
+      final key = row[keyColumn - 1];
       final value = row[valueColumn - 1];
       result[key] = _parser.parse(value);
     }

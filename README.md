@@ -76,15 +76,8 @@ This also works with plurals for example:
 
 This tools support 2 options
 
-- **`--config`** : Configuration file path
+- **`--config`** : Configuration file path (Optional : defaults to `./wording_config.dart`)
 - **`--help`** : Display help info
-
-
-[//]: # (- **`--upgrade`** : Export sheet in local xlsx file that you can commit for later edit. It prevent risks to have unwanted wording changes when you fix bugs. And then update wording)
-
-[//]: # (- **`--update`** : Update wording files from local xlsx file)
-
-[//]: # (- **`--invalid`** : &#40;error|warning&#41; exist with error when invalid translations found or just warn)
 
 ## Complete Configuration
 
@@ -97,6 +90,8 @@ credentials:
 sheetId: "18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4"
 sheetNames: ["Commons", "MyApp"]
 output_dir: "outputs"
+sheet_start_index: 2
+key_column: 1
 languages:
   en:
     column: 3

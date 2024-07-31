@@ -36,6 +36,8 @@ class WordingConfig {
   final String sheetId;
   final List<String> sheetNames;
   final String outputDir;
+  final int sheetStartIndex;
+  final int keyColumn;
   final List<LanguageConfig> languages;
   final ValidationConfig validation;
   final GenL10nConfig genL10n;
@@ -45,6 +47,8 @@ class WordingConfig {
     this.sheetId,
     this.sheetNames,
     this.outputDir,
+    this.sheetStartIndex,
+    this.keyColumn,
     this.languages,
     this.validation,
     this.genL10n,

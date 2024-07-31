@@ -44,6 +44,8 @@ class WordingConfigLoader {
         yamlData["sheetId"],
         sheetNames,
         yamlData["output_dir"],
+        yamlData["sheet_start_index"] ?? 2,
+        yamlData["key_column"] ?? 1,
         languageMap.keys.map((locale) {
           final localeConfig = languageMap[locale];
           return LanguageConfig(locale, localeConfig!["column"]!);

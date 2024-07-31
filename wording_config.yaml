@@ -5,6 +5,8 @@ credentials:
 sheetId: "1g4F29TlC1TejgVgEdcKP41-wUz1kVGRNZjva8lZ0WpQ"
 sheetNames: ["my_mobile_app", "module_2"]
 output_dir: "outputs"
+sheet_start_index: 2
+key_column: 1
 languages:
   fr:
     column: 2
