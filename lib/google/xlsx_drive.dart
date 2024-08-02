@@ -9,6 +9,7 @@ class XLSXDrive {
   XLSXDrive(AutoRefreshingAuthClient client)
       : _gsheets = GSheets.withClient(client);
 
+  /// Retrieve the spreadsheet document
   Future<Spreadsheet> getSpreadsheet(String spreadsheetId) async {
     try {
       final spreadsheet = await _gsheets.spreadsheet(spreadsheetId);

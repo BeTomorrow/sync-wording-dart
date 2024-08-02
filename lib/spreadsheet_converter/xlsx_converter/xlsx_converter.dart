@@ -9,6 +9,7 @@ import 'package:sync_wording/wording.dart';
 class XLSXConverter {
   final _parser = WordingParser();
 
+  /// Convert the data set in the spreadsheet in Objects defined by the model
   Future<WordingResult> convert(
       Spreadsheet spreadsheet, WordingConfig config) async {
     final sheetNames = config.sheetNames;
@@ -31,6 +32,7 @@ class XLSXConverter {
     return result;
   }
 
+  /// Convert the data set in the worksheet in Objects defined by the model
   Future<WordingResult> _convertWorksheet(
       Worksheet worksheet, WordingConfig config) async {
     final languages = config.languages;
@@ -58,6 +60,7 @@ class XLSXConverter {
     return result;
   }
 
+  /// Convert the data set in the row a WordingEntry if the row is valid
   void _addWording(
     Map<String, WordingEntry> result,
     List<String> row,

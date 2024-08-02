@@ -7,9 +7,11 @@ const _placeholderRegex =
 const _separator = "|";
 
 class WordingParser {
+  /// Convert a text value matching the expected format in a WordingEntry
   WordingEntry parse(String rawText) {
     List<PlaceholderCharac>? characs;
 
+    /// Try to find placeholders in the given text parameter
     final matches = RegExp(_placeholderRegex).allMatches(rawText).toList();
     if (matches.isNotEmpty) {
       var value = rawText;
@@ -19,19 +21,23 @@ class WordingParser {
           final match = matches[index];
           final matchedStr = rawText.substring(match.start, match.end);
 
-          var matchContent = matchedStr.substring(1, matchedStr.length - 1);
+          final matchContent = matchedStr.substring(1, matchedStr.length - 1);
 
+          /// Try to find if a type and format is set
           var pipeIndex = matchContent.indexOf(_separator);
           if (pipeIndex != -1) {
             final placeholder = matchContent.substring(0, pipeIndex);
 
+            /// Replace the found value by the placeholder only
             value =
                 value.replaceRange(match.start, match.end, "{$placeholder}");
 
+            /// Analyze only type-and-format part
             final typeAndFormat = matchContent.substring(pipeIndex + 1);
             var type = typeAndFormat;
             String? format;
 
+            /// Split type and format in dedicated values
             pipeIndex = type.indexOf(_separator);
             if (pipeIndex != -1) {
               type = typeAndFormat.substring(0, pipeIndex);
@@ -52,6 +58,7 @@ class WordingParser {
       }
     }
 
+    /// If a placeholder couldn't be found, returns the text as wet in the sheet
     return WordingEntry(rawText, null);
   }
 }

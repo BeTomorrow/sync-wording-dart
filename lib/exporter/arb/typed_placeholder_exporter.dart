@@ -1,5 +1,7 @@
 import 'package:sync_wording/wording.dart';
 
+/// Generic class dedicated to create the PlaceholderCharac data
+/// ready to be exported in the ARB file
 sealed class PlaceholderExporter {
   String get _type;
 
@@ -8,8 +10,10 @@ sealed class PlaceholderExporter {
   ];
   static final _defaultExporter = _DefaultPlaceholderExporter();
 
+  /// Abstract class to export the
   Map<String, dynamic> export(PlaceholderCharac placeholderCharac);
 
+  /// Factory method to create the exporter dedicated to the defined type
   static PlaceholderExporter forType(String type) {
     for (final exporter in _exporters) {
       if (exporter._type == type) {
@@ -20,6 +24,7 @@ sealed class PlaceholderExporter {
   }
 }
 
+/// The default exporter for common placeholder types
 class _DefaultPlaceholderExporter extends PlaceholderExporter {
   @override
   String get _type => "_";
@@ -37,6 +42,7 @@ class _DefaultPlaceholderExporter extends PlaceholderExporter {
   }
 }
 
+/// The exporter dedicated to DataTime placeholder types
 class _DateTimePlaceholderExporter extends PlaceholderExporter {
   @override
   String get _type => "DateTime";

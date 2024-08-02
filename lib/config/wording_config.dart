@@ -19,8 +19,11 @@ class ValidationConfig {
 
   ValidationConfig._(this.column, this.expected);
 
+  /// Configuration that always accepts translations
   factory ValidationConfig.always() => ValidationConfig._(null, null);
 
+  /// Configuration that will check the value set in the validation column
+  /// and compare it with the expected value
   factory ValidationConfig.withExpected(int column, String expected) =>
       ValidationConfig._(column, expected);
 }

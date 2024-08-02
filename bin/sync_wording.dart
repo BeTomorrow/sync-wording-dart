@@ -35,22 +35,27 @@ Future<void> main(List<String> arguments) async {
       exit(0);
     }
 
+    /// Build the configuration to apply to this program
     final config =
         await WordingConfigLoader().loadConfiguration(argResults["config"]);
 
+    /// Authenticate to Google and retrieve specified spreadsheet
     final client =
         await GoogleAuth().authenticate(config.credentials, httpClient);
     final spreadsheet = await XLSXDrive(client).getSpreadsheet(config.sheetId);
 
+    /// Convert the spreadsheet to the internal model
     final result = await XLSXConverter().convert(spreadsheet, config);
     httpClient.close();
 
+    /// Export ARB files containing the translations
     final exporter = ARBWordingExporter();
     for (final locale in result.keys) {
       await exporter.export(
           locale, result[locale]!, "${config.outputDir}/intl_$locale.arb");
     }
 
+    /// Generate AppLocalization files
     if (config.genL10n.autoCall) {
       if (config.genL10n.withFvm) {
         await Process.run("fvm", ["flutter", "gen-l10n"]);

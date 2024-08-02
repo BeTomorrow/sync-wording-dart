@@ -1,11 +1,14 @@
 import 'package:sync_wording/config/wording_config.dart';
 
+/// Class used to validate or invalidate a translation
 sealed class Validator {
   static final _alwaysTrueValidator = _AlwaysTrueValidator();
   static final List<_CheckValueValidator> _checkValueValidators = [];
 
+  /// Abstract method called to validate or invalidate a worksheet row
   bool isValid(List<String> row);
 
+  /// Method that returns a validator object matching the specified config
   factory Validator.get(ValidationConfig config) {
     final column = config.column;
     final expected = config.expected;
@@ -25,6 +28,7 @@ sealed class Validator {
 }
 
 class _AlwaysTrueValidator implements Validator {
+  /// Always validates a translation row
   @override
   bool isValid(List<String> row) => true;
 }
@@ -35,6 +39,8 @@ class _CheckValueValidator implements Validator {
 
   _CheckValueValidator(this._column, this._expected);
 
+  /// Compare the value in the row a the specified column
+  /// Returns true if value is the same than the expected one
   @override
   bool isValid(List<String> row) {
     if (row.length >= _column) {

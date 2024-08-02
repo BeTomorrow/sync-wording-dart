@@ -5,6 +5,7 @@ import 'package:yaml/yaml.dart';
 
 const _defaultCredentialsFile = ".google_access_token.json";
 
+/// Read config file and build the WordingConfig
 class WordingConfigLoader {
   Future<WordingConfig> loadConfiguration(String configFile) async {
     try {
@@ -79,6 +80,7 @@ extension YamlMapConverter on YamlMap {
     }
   }
 
+  /// Convert YamlMap data to Map data
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
     nodes.forEach((k, v) {

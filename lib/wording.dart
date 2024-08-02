@@ -1,3 +1,4 @@
+/// Class defining a placeholder specificity
 class PlaceholderCharac {
   final String placeholder;
   final String type;
@@ -6,6 +7,7 @@ class PlaceholderCharac {
   PlaceholderCharac(this.placeholder, this.type, this.format);
 }
 
+/// Class defining a translation value, with its placeholder specificities
 class WordingEntry {
   final String value;
   final List<PlaceholderCharac>? placeholderCharacs;

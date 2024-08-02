@@ -5,13 +5,16 @@ import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:sync_wording/config/wording_config.dart';
 
+/// Google scopes needed to access the spreadsheet
 const _scopes = [
   "https://www.googleapis.com/auth/drive",
   "https://www.googleapis.com/auth/drive.file",
   "https://www.googleapis.com/auth/spreadsheets",
 ];
 
+/// This class manages the Google authentication
 class GoogleAuth {
+  ///
   Future<AutoRefreshingAuthClient> authenticate(
       CredentialsConfig config, http.Client httpClient) async {
     final storedCredentials = await _readCredentials(config);
@@ -24,6 +27,8 @@ class GoogleAuth {
     return await _requestUserConsentedClient(config, httpClient);
   }
 
+  /// Create a client that will ask the user to consent the access
+  /// to the Google API
   Future<AutoRefreshingAuthClient> _requestUserConsentedClient(
       CredentialsConfig config, http.Client httpClient) async {
     try {
@@ -41,6 +46,7 @@ class GoogleAuth {
     }
   }
 
+  /// Retrieve the previously requested credentials from a file
   Future<AccessCredentials?> _readCredentials(CredentialsConfig config) async {
     final file = File(config.credentialsFile);
     if (await file.exists()) {
@@ -56,6 +62,7 @@ class GoogleAuth {
     return null;
   }
 
+  /// Write a file that will contain the consented credentials
   Future<void> _writeCredentials(
       CredentialsConfig config, AccessCredentials credentials) async {
     final file = File(config.credentialsFile);

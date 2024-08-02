@@ -8,6 +8,7 @@ import 'package:sync_wording/wording.dart';
 const _placeholdersKey = "placeholders";
 
 class ARBWordingExporter extends WordingExporter {
+  /// The method will write the localized ARB file matching the WordingEntries
   @override
   Future<void> export(String locale, Map<String, WordingEntry> wordingEntries,
       String outputFile) async {
