@@ -1,0 +1,18 @@
+credentials:
+  client_id: "your.google.client.id"
+  client_secret: "your.google.client.secret"
+
+sheetId: "1g4F29TlC1TejgVgEdcKP41-wUz1kVGRNZjva8lZ0WpQ"
+sheetNames: ["my_mobile_app", "module_2"]
+output_dir: "lib/localizations"
+languages:
+  fr:
+    column: 2
+  en:
+    column: 3
+validation:
+  column: 4
+  expected: "OK"
+
+gen_l10n:
+  auto_call: true
