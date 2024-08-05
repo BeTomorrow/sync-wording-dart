@@ -31,7 +31,7 @@ languages:
     # column : 1='A', 2='B', ...
 ```
 
-- Then run `dart run sync_wording`
+- Then run `flutter run sync_wording`
 
 It will ask you to grant access on Google Sheet
 
