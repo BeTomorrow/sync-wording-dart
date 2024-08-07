@@ -1,6 +1,6 @@
 name: sync_wording
 version: 0.1.0
-description: A command-line application to sync GoogleSheet wordings.
+description: A dart command-line application to generate localization assets and class files used by your Flutter application from a GoogleSheet document.
 repository: https://github.com/BeTomorrow/sync-wording-dart
 homepage: https://github.com/BeTomorrow/sync-wording-dart
 issue_tracker: https://github.com/BeTomorrow/sync-wording-dart/issues
