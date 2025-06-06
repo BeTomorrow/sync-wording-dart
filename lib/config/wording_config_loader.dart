@@ -5,6 +5,13 @@ import 'package:yaml/yaml.dart';
 
 const _defaultCredentialsFile = ".google_access_token.json";
 
+// These secrets are allowed to be publicly revealed in the codebase.
+final _defaultCredentialsConfig = CredentialsConfig(
+  "1309740887-6u609jvssi5c2e56vd5n5dc4drgsc906.apps.googleusercontent.com",
+  "bEK0Dy-9Y5doRvjfx_AtH0rS",
+  _defaultCredentialsFile,
+);
+
 /// Read config file and build the WordingConfig
 class WordingConfigLoader {
   Future<WordingConfig> loadConfiguration(String configFile) async {
@@ -15,14 +22,15 @@ class WordingConfigLoader {
       final yamlData = yamlMap.toMap();
 
       final credentialsYamlData = yamlData["credentials"];
-      if (credentialsYamlData == null) {
-        throw "Config file does not contain credentials info";
-      }
-      final credentialsConfig = CredentialsConfig(
-        credentialsYamlData["client_id"] as String,
-        credentialsYamlData["client_secret"] as String,
-        credentialsYamlData["credentials_file"] ?? _defaultCredentialsFile,
-      );
+
+      final credentialsConfig = credentialsYamlData == null
+          ? _defaultCredentialsConfig
+          : CredentialsConfig(
+              credentialsYamlData["client_id"] as String,
+              credentialsYamlData["client_secret"] as String,
+              credentialsYamlData["credentials_file"] ??
+                  _defaultCredentialsFile,
+            );
 
       final sheetNamesYamlData = yamlData["sheetNames"];
       final sheetNames = sheetNamesYamlData != null
@@ -42,7 +50,9 @@ class WordingConfigLoader {
       GenL10nConfig genL10nConfig = gen10nYamlData == null
           ? GenL10nConfig(false)
           : GenL10nConfig(
-              gen10nYamlData["auto_call"], gen10nYamlData["with_fvm"] ?? false);
+              gen10nYamlData["auto_call"],
+              gen10nYamlData["with_fvm"] ?? false,
+            );
 
       return WordingConfig(
         credentialsConfig,

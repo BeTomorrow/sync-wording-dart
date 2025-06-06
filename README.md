@@ -17,10 +17,6 @@ You can find a sample sheet [here](https://docs.google.com/spreadsheets/d/18Zf_X
 - Create wording config file named `wording_config.yaml` at project root location.
 
 ```yaml
-credentials:
-  client_id: "your.google.client.id"
-  client_secret: "your.google.client.secret"
-
 sheetId: "your.sheet.id"
 output_dir: "lib/localizations"
 languages:
@@ -31,7 +27,7 @@ languages:
     # column : 1='A', 2='B', ...
 ```
 
-- Then run `flutter run sync_wording`
+- Then run `flutter pub run sync_wording`
 
 It will ask you to grant access on Google Sheet
 
@@ -83,7 +79,7 @@ sheetNames: ["Commons", "MyApp"]
 By default the column containing the translation keys is the first column (column 'A'), but you can specify another key column if your GoogleSheet document has another format.
 
 ```yaml
-key_column: 2  # default : 1
+key_column: 2 # default : 1
 ```
 
 ### Starting row for values
@@ -92,7 +88,7 @@ By default, the first row is considered as a header, valid keys and translations
 If you GoogleSheet document is not in this format, you can specify the row from which translations will be taken in account:
 
 ```yaml
-sheet_start_index: 3  # default : 2
+sheet_start_index: 3 # default : 2
 ```
 
 ### Wording validation
@@ -100,7 +96,7 @@ sheet_start_index: 3  # default : 2
 In your google sheet, you can add column indicate that it's a valid translation
 
 | Keys                 | English   | French | Validation |
-| -------------------- | --------- | ------ |------------|
+| -------------------- | --------- | ------ | ---------- |
 | user.firstname_title | Firstname | Prénom | OK         |
 | user.lastname_title  | Lastname  | Nom    | NOT OK     |
 
@@ -139,28 +135,23 @@ This tools support 2 options
 Complete example of a `wording_config.yaml` file:
 
 ```yaml
-credentials:
-  client_id: "your.google.client.id"
-  client_secret: "your.google.client.secret"
-  credentials_file: "credentials.json"    # (Optional) defaults ".google_credentials.json"
-
 sheetId: "your.sheet.id"
 output_dir: "lib/localizations"
-sheetNames: ["Commons", "MyApp"]          # (Optional)
-sheet_start_index: 2                      # (Optional) defaults 2
+sheetNames: ["Commons", "MyApp"] # (Optional)
+sheet_start_index: 2 # (Optional) defaults 2
 
 # column values : 1='A', 2='B', ...
-key_column: 1                             # (Optional) defaults 1
+key_column: 1 # (Optional) defaults 1
 languages:
   en:
     column: 3
   fr:
     column: 4
-validation:                               # (Optional)
+validation: # (Optional)
   column: 5
   expected: "OK"
 
-gen_l10n:                                 # (Optional)
+gen_l10n: # (Optional)
   auto_call: true
-  with_fvm: true                          # (Optional)
+  with_fvm: true # (Optional)
 ```
