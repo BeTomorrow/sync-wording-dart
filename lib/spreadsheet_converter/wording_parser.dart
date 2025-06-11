@@ -2,7 +2,11 @@ import 'dart:io';
 
 import 'package:sync_wording/wording.dart';
 
-const _placeholderRegex = r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
+// At least one separator '|'
+//   else (a simple placeholder) is not interesting to parse
+//   as we can use the rawText directly
+const _placeholderRegex =
+    r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
 const _separator = "|";
 
 /// Main parser class that coordinates the parsing process
@@ -23,8 +27,10 @@ class WordingParser {
         return WordingEntry(rawText, null);
       }
 
-      final formattedText = _placeholderFormatter.formatText(rawText, placeholders);
-      final characteristics = _placeholderFormatter.createCharacteristics(placeholders);
+      final formattedText =
+          _placeholderFormatter.formatText(rawText, placeholders);
+      final characteristics =
+          _placeholderFormatter.createCharacteristics(placeholders);
 
       return WordingEntry(formattedText, characteristics);
     } catch (e) {
@@ -62,7 +68,8 @@ class PlaceholderFormatter {
     return formattedText;
   }
 
-  List<PlaceholderCharac>? createCharacteristics(List<PlaceholderMatch> placeholders) {
+  List<PlaceholderCharac>? createCharacteristics(
+      List<PlaceholderMatch> placeholders) {
     if (placeholders.isEmpty) return null;
 
     final characteristics = <PlaceholderCharac>[];
