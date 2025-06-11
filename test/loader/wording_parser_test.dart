@@ -51,6 +51,20 @@ void main() {
       expect(result.placeholderCharacs![0].format, "dd/MM/yyyy:hh'h'mm'm'ss");
     });
 
+    test("pipes allowed in format", () {
+      final parser = WordingParser();
+
+      final WordingEntry result =
+          parser.parse("It's {date|DateTime|dd/MM/yyyy hh|mm|ss}");
+
+      expect(result.value, "It's {date}");
+      expect(result.placeholderCharacs, isNotNull);
+      expect(result.placeholderCharacs!.length, 1);
+      expect(result.placeholderCharacs![0].placeholder, "date");
+      expect(result.placeholderCharacs![0].type, "DateTime");
+      expect(result.placeholderCharacs![0].format, "dd/MM/yyyy hh|mm|ss");
+    });
+
     test("multiple placeholders", () {
       final parser = WordingParser();
 
