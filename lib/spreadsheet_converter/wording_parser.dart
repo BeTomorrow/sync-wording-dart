@@ -2,63 +2,125 @@ import 'dart:io';
 
 import 'package:sync_wording/wording.dart';
 
-const _placeholderRegex =
-    r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
+const _placeholderRegex = r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
 const _separator = "|";
 
+/// Main parser class that coordinates the parsing process
 class WordingParser {
-  /// Convert a text value matching the expected format in a WordingEntry
+  final PlaceholderExtractor _placeholderExtractor;
+  final PlaceholderFormatter _placeholderFormatter;
+
+  WordingParser({
+    PlaceholderExtractor? placeholderExtractor,
+    PlaceholderFormatter? placeholderFormatter,
+  })  : _placeholderExtractor = placeholderExtractor ?? PlaceholderExtractor(),
+        _placeholderFormatter = placeholderFormatter ?? PlaceholderFormatter();
+
   WordingEntry parse(String rawText) {
-    List<PlaceholderCharac>? characs;
+    try {
+      final placeholders = _placeholderExtractor.extractPlaceholders(rawText);
+      if (placeholders.isEmpty) {
+        return WordingEntry(rawText, null);
+      }
 
-    /// Try to find placeholders in the given text parameter
-    final matches = RegExp(_placeholderRegex).allMatches(rawText).toList();
-    if (matches.isNotEmpty) {
-      var value = rawText;
+      final formattedText = _placeholderFormatter.formatText(rawText, placeholders);
+      final characteristics = _placeholderFormatter.createCharacteristics(placeholders);
 
-      try {
-        for (var index = matches.length - 1; index >= 0; index--) {
-          final match = matches[index];
-          final matchedStr = rawText.substring(match.start, match.end);
+      return WordingEntry(formattedText, characteristics);
+    } catch (e) {
+      stdout.writeln("Error parsing placeholders from '$rawText' -> Skip");
+      return WordingEntry(rawText, null);
+    }
+  }
+}
 
-          final matchContent = matchedStr.substring(1, matchedStr.length - 1);
+/// Class responsible for extracting placeholders from text
+class PlaceholderExtractor {
+  List<PlaceholderMatch> extractPlaceholders(String text) {
+    final matches = RegExp(_placeholderRegex).allMatches(text).toList();
+    return matches.map((match) {
+      final matchedStr = text.substring(match.start, match.end);
+      final content = matchedStr.substring(1, matchedStr.length - 1);
+      return PlaceholderMatch(match.start, match.end, content);
+    }).toList();
+  }
+}
 
-          /// Try to find if a type and format is set
-          var pipeIndex = matchContent.indexOf(_separator);
-          if (pipeIndex != -1) {
-            final placeholder = matchContent.substring(0, pipeIndex);
+/// Class responsible for formatting text and creating placeholder characteristics
+class PlaceholderFormatter {
+  String formatText(String originalText, List<PlaceholderMatch> placeholders) {
+    var formattedText = originalText;
+    for (var i = placeholders.length - 1; i >= 0; i--) {
+      final placeholder = placeholders[i];
+      final name = _extractPlaceholderName(placeholder.content);
+      formattedText = formattedText.replaceRange(
+        placeholder.start,
+        placeholder.end,
+        "{$name}",
+      );
+    }
+    return formattedText;
+  }
 
-            /// Replace the found value by the placeholder only
-            value =
-                value.replaceRange(match.start, match.end, "{$placeholder}");
+  List<PlaceholderCharac>? createCharacteristics(List<PlaceholderMatch> placeholders) {
+    if (placeholders.isEmpty) return null;
 
-            /// Analyze only type-and-format part
-            final typeAndFormat = matchContent.substring(pipeIndex + 1);
-            var type = typeAndFormat;
-            String? format;
+    final characteristics = <PlaceholderCharac>[];
+    for (final placeholder in placeholders) {
+      final name = _extractPlaceholderName(placeholder.content);
+      final typeAndFormat = _extractTypeAndFormat(placeholder.content);
 
-            /// Split type and format in dedicated values
-            pipeIndex = type.indexOf(_separator);
-            if (pipeIndex != -1) {
-              type = typeAndFormat.substring(0, pipeIndex);
-              format = typeAndFormat.substring(pipeIndex + 1);
-            }
-
-            if (type.isEmpty || (format != null && format.isEmpty)) {
-              throw "Empty info";
-            }
-
-            characs ??= [];
-            characs.insert(0, PlaceholderCharac(placeholder, type, format));
-          }
-        }
-        return WordingEntry(value, characs);
-      } catch (e) {
-        stdout.writeln("Error parsing placeholders from '$rawText' -> Skip");
+      if (typeAndFormat != null) {
+        characteristics.add(PlaceholderCharac(
+          name,
+          typeAndFormat.type,
+          typeAndFormat.format,
+        ));
       }
     }
-
-    /// If a placeholder couldn't be found, returns the text as wet in the sheet
-    return WordingEntry(rawText, null);
+    return characteristics;
   }
+
+  String _extractPlaceholderName(String content) {
+    final pipeIndex = content.indexOf(_separator);
+    return pipeIndex == -1 ? content : content.substring(0, pipeIndex);
+  }
+
+  TypeAndFormat? _extractTypeAndFormat(String content) {
+    final pipeIndex = content.indexOf(_separator);
+    if (pipeIndex == -1) return null;
+
+    final typeAndFormat = content.substring(pipeIndex + 1);
+    final secondPipeIndex = typeAndFormat.indexOf(_separator);
+
+    if (secondPipeIndex == -1) {
+      return TypeAndFormat(typeAndFormat, null);
+    }
+
+    final type = typeAndFormat.substring(0, secondPipeIndex);
+    final format = typeAndFormat.substring(secondPipeIndex + 1);
+
+    if (type.isEmpty || format.isEmpty) {
+      return null;
+    }
+
+    return TypeAndFormat(type, format);
+  }
+}
+
+/// Class representing a placeholder match in the text
+class PlaceholderMatch {
+  final int start;
+  final int end;
+  final String content;
+
+  PlaceholderMatch(this.start, this.end, this.content);
+}
+
+/// Class representing type and format information for a placeholder
+class TypeAndFormat {
+  final String type;
+  final String? format;
+
+  TypeAndFormat(this.type, this.format);
 }
