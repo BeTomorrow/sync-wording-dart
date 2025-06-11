@@ -123,6 +123,28 @@ gen_l10n:
   with_fvm: true
 ```
 
+## Use your own Google Application
+
+By default, the tool uses a pre-configured Google Application. If you want to use your own Google Application:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google Sheets API for your project
+4. Go to "Credentials" and create a new OAuth 2.0 Client ID
+5. Configure the OAuth consent screen if not already done
+6. Download the client credentials or copy the client ID and client secret
+
+Then add these credentials to your `wording_config.yaml`:
+
+```yaml
+credentials:
+  client_id: "your-client-id"
+  client_secret: "your-client-secret"
+  credentials_file: ".google_access_token.json" # Optional: defaults to .google_access_token.json
+```
+
+The `credentials_file` is where the OAuth tokens will be stored. Make sure to add this file to your `.gitignore` to keep your tokens secure.
+
 ## Options
 
 This tools support 2 options
