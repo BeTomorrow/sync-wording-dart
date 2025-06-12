@@ -61,15 +61,20 @@ class ConfigBuilder {
       throw Exception('Missing required field: output_dir');
     }
 
-    final languages = _parseLanguages(yamlData['languages'] as Map<dynamic, dynamic>?);
+    final languages =
+        _parseLanguages(yamlData['languages'] as Map<dynamic, dynamic>?);
     if (languages.isEmpty) {
       throw Exception('Missing required field: languages');
     }
 
-    final credentials = _parseCredentials(yamlData['credentials'] as Map<dynamic, dynamic>?);
-    final validation = _parseValidation(yamlData['validation'] as Map<dynamic, dynamic>?);
-    final genL10n = _parseGenL10n(yamlData['gen_l10n'] as Map<dynamic, dynamic>?);
-    final sheetNames = _parseSheetNames(yamlData['sheetNames'] as List<dynamic>?);
+    final credentials =
+        _parseCredentials(yamlData['credentials'] as Map<dynamic, dynamic>?);
+    final validation =
+        _parseValidation(yamlData['validation'] as Map<dynamic, dynamic>?);
+    final genL10n =
+        _parseGenL10n(yamlData['gen_l10n'] as Map<dynamic, dynamic>?);
+    final sheetNames =
+        _parseSheetNames(yamlData['sheetNames'] as List<dynamic>?);
     final sheetStartIndex = yamlData['sheetStartIndex'] as int? ?? 2;
     final keyColumn = yamlData['keyColumn'] as int? ?? 1;
 

@@ -48,8 +48,10 @@ languages:
       expect(config.languages[0].column, equals(2));
       expect(config.languages[1].locale, equals('fr'));
       expect(config.languages[1].column, equals(3));
-      expect(config.credentials.clientId, equals(_defaultCredentialsConfig.clientId));
-      expect(config.credentials.clientSecret, equals(_defaultCredentialsConfig.clientSecret));
+      expect(config.credentials.clientId,
+          equals(_defaultCredentialsConfig.clientId));
+      expect(config.credentials.clientSecret,
+          equals(_defaultCredentialsConfig.clientSecret));
     });
 
     test('should load configuration with custom credentials', () async {
@@ -70,7 +72,8 @@ languages:
 
       expect(config.credentials.clientId, equals('custom-client-id'));
       expect(config.credentials.clientSecret, equals('custom-client-secret'));
-      expect(config.credentials.credentialsFile, equals('custom-credentials.json'));
+      expect(config.credentials.credentialsFile,
+          equals('custom-credentials.json'));
     });
 
     test('should load configuration with validation', () async {
