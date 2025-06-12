@@ -37,6 +37,19 @@ void main() {
       expect(result.placeholderCharacs![0].format, null);
     });
 
+    test("type alphanumeric placeholder", () {
+      final parser = WordingParser();
+
+      final WordingEntry result = parser.parse("Hello {user1|String}");
+
+      expect(result.value, "Hello {user1}");
+      expect(result.placeholderCharacs, isNotNull);
+      expect(result.placeholderCharacs!.length, 1);
+      expect(result.placeholderCharacs![0].placeholder, "user1");
+      expect(result.placeholderCharacs![0].type, "String");
+      expect(result.placeholderCharacs![0].format, null);
+    });
+
     test("type and format placeholder", () {
       final parser = WordingParser();
 

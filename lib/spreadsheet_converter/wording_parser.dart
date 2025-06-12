@@ -6,7 +6,7 @@ import 'package:sync_wording/wording.dart';
 //   else (a simple placeholder) is not interesting to parse
 //   as we can use the rawText directly
 const _placeholderRegex =
-    r'\{([a-zA-Z]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
+    r'\{([a-zA-Z0-9]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
 const _separator = "|";
 
 /// Main parser class that coordinates the parsing process
