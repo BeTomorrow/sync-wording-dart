@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:sync_wording/wording.dart';
 
-// At least one separator '|'
-//   else (a simple placeholder) is not interesting to parse
-//   as we can use the rawText directly
+// Regex to match placeholders with or without type/format
 const _placeholderRegex =
-    r'\{([a-zA-Z0-9]+)([|]{1}[a-zA-Z]+([|]{1}[^}]+){0,1}){1}\}';
+    r'\{([a-zA-Z0-9]+)([|][a-zA-Z]+([|][^}]+){0,1}){0,1}\}';
 const _separator = "|";
 
 /// Main parser class that coordinates the parsing process
@@ -82,6 +80,13 @@ class PlaceholderFormatter {
           name,
           typeAndFormat.type,
           typeAndFormat.format,
+        ));
+      } else {
+        // For simple placeholders without type, use null for type and format
+        characteristics.add(PlaceholderCharac(
+          name,
+          null,
+          null,
         ));
       }
     }

@@ -10,54 +10,50 @@ class XLSXConverter {
   final _parser = WordingParser();
 
   /// Convert the data set in the spreadsheet in Objects defined by the model
-  Future<WordingResult> convert(
-      Spreadsheet spreadsheet, WordingConfig config) async {
+  Future<Wordings> convert(Spreadsheet spreadsheet, WordingConfig config) async {
     final sheetNames = config.sheetNames;
 
-    WordingResult result = {};
+    Wordings wordings = {};
     for (final l in config.languages) {
-      result[l.locale] = {};
+      wordings[l.locale] = {};
     }
 
     for (final worksheet in spreadsheet.sheets) {
       if (sheetNames.isEmpty || sheetNames.contains(worksheet.title)) {
-        WordingResult worksheetResult =
-            await _convertWorksheet(worksheet, config);
+        Wordings worksheetResult = await _convertWorksheet(worksheet, config);
 
         for (final l in worksheetResult.keys) {
-          result[l]!.addAll(worksheetResult[l]!);
+          wordings[l]!.addAll(worksheetResult[l]!);
         }
       }
     }
-    return result;
+    return wordings;
   }
 
   /// Convert the data set in the worksheet in Objects defined by the model
-  Future<WordingResult> _convertWorksheet(
-      Worksheet worksheet, WordingConfig config) async {
+  Future<Wordings> _convertWorksheet(Worksheet worksheet, WordingConfig config) async {
     final languages = config.languages;
     final validator = Validator.get(config.validation);
 
-    WordingResult result = {};
+    Wordings wordings = {};
     if (worksheet.rowCount < 2) {
       stdout.writeln("Not enough data in worksheet '${worksheet.title}' !");
-      return result;
+      return wordings;
     }
 
     for (final languageConfig in languages) {
-      final languageResult = <String, WordingEntry>{};
-      result[languageConfig.locale] = languageResult;
+      final LanguageWordings languageWordings = {};
+      wordings[languageConfig.locale] = languageWordings;
 
       final values = worksheet.values;
       final allRows = await values.allRows(fromRow: 2);
 
       for (final row in allRows) {
-        _addWording(languageResult, row, config.keyColumn,
-            languageConfig.column, validator);
+        _addWording(languageWordings, row, config.keyColumn, languageConfig.column, validator);
       }
     }
 
-    return result;
+    return wordings;
   }
 
   /// Convert the data set in the row a WordingEntry if the row is valid

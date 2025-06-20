@@ -14,7 +14,11 @@ sealed class PlaceholderExporter {
   Map<String, dynamic> export(PlaceholderCharac placeholderCharac);
 
   /// Factory method to create the exporter dedicated to the defined type
-  static PlaceholderExporter forType(String type) {
+  static PlaceholderExporter forType(String? type) {
+    if (type == null) {
+      return _defaultExporter;
+    }
+
     for (final exporter in _exporters) {
       if (exporter._type == type) {
         return exporter;
@@ -31,7 +35,7 @@ class _DefaultPlaceholderExporter extends PlaceholderExporter {
 
   @override
   Map<String, dynamic> export(PlaceholderCharac placeholderCharac) {
-    final characMap = {"type": placeholderCharac.type};
+    final characMap = {"type": placeholderCharac.type ?? "Object"};
 
     final format = placeholderCharac.format;
     if (format != null) {
@@ -49,7 +53,7 @@ class _DateTimePlaceholderExporter extends PlaceholderExporter {
 
   @override
   Map<String, dynamic> export(PlaceholderCharac charac) {
-    final characMap = {"type": charac.type};
+    final characMap = {"type": charac.type ?? "Object"};
 
     final format = charac.format;
     if (format != null) {

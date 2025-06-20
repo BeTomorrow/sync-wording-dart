@@ -1,7 +1,7 @@
 /// Class defining a placeholder specificity
 class PlaceholderCharac {
   final String placeholder;
-  final String type;
+  final String? type;
   final String? format;
 
   PlaceholderCharac(this.placeholder, this.type, this.format);
@@ -15,4 +15,5 @@ class WordingEntry {
   WordingEntry(this.value, this.placeholderCharacs);
 }
 
-typedef WordingResult = Map<String, Map<String, WordingEntry>>;
+typedef LanguageWordings = Map<String, WordingEntry>;
+typedef Wordings = Map<String, LanguageWordings>;

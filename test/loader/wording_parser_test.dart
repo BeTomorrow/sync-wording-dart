@@ -21,7 +21,11 @@ void main() {
       final WordingEntry result = parser.parse("Hello {user}");
 
       expect(result.value, "Hello {user}");
-      expect(result.placeholderCharacs, null);
+      expect(result.placeholderCharacs, isNotNull);
+      expect(result.placeholderCharacs!.length, 1);
+      expect(result.placeholderCharacs![0].placeholder, "user");
+      expect(result.placeholderCharacs![0].type, null);
+      expect(result.placeholderCharacs![0].format, null);
     });
 
     test("type placeholder", () {
@@ -86,13 +90,16 @@ void main() {
 
       expect(result.value, "Hello {user}. It's {meteo} at {date}");
       expect(result.placeholderCharacs, isNotNull);
-      expect(result.placeholderCharacs!.length, 2);
-      expect(result.placeholderCharacs![0].placeholder, "meteo");
-      expect(result.placeholderCharacs![0].type, "String");
+      expect(result.placeholderCharacs!.length, 3);
+      expect(result.placeholderCharacs![0].placeholder, "user");
+      expect(result.placeholderCharacs![0].type, null);
       expect(result.placeholderCharacs![0].format, null);
-      expect(result.placeholderCharacs![1].placeholder, "date");
-      expect(result.placeholderCharacs![1].type, "DateTime");
-      expect(result.placeholderCharacs![1].format, "dd/MM/yyyy : hh'h'mm'm'ss");
+      expect(result.placeholderCharacs![1].placeholder, "meteo");
+      expect(result.placeholderCharacs![1].type, "String");
+      expect(result.placeholderCharacs![1].format, null);
+      expect(result.placeholderCharacs![2].placeholder, "date");
+      expect(result.placeholderCharacs![2].type, "DateTime");
+      expect(result.placeholderCharacs![2].format, "dd/MM/yyyy : hh'h'mm'm'ss");
     });
 
     test("simple plural", () {
