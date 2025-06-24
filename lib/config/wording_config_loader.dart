@@ -153,8 +153,7 @@ class ConfigBuilder {
       }
       return FallbackConfig.enabled(defaultLanguage);
     } else {
-      // If fallback is disabled, keep the default_language if provided, else fallback to ''
-      return FallbackConfig(false, defaultLanguage ?? '');
+      return FallbackConfig.disabled();
     }
   }
 }
