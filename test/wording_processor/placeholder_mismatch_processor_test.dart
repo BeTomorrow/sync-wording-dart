@@ -1,6 +1,6 @@
-import 'package:sync_wording/analysis/placeholder_mismatch_analyzer.dart';
 import 'package:sync_wording/logger/logger.dart';
 import 'package:sync_wording/wording.dart';
+import 'package:sync_wording/wording_processor/placeholder_mismatch_processor.dart';
 import 'package:test/test.dart';
 
 class MockLogger implements Logger {
@@ -13,16 +13,16 @@ class MockLogger implements Logger {
 }
 
 void main() {
-  group('PlaceholderMismatchAnalyzer', () {
+  group('PlaceholderMismatchProcessor', () {
     late MockLogger mockLogger;
-    late PlaceholderMismatchAnalyzer analyzer;
+    late PlaceholderMismatchProcessor processor;
 
     setUp(() {
       mockLogger = MockLogger();
-      analyzer = PlaceholderMismatchAnalyzer(mockLogger);
+      processor = PlaceholderMismatchProcessor(mockLogger);
     });
 
-    test('should not analyze with less than 2 languages', () {
+    test('should not process with less than 2 languages', () {
       final wordings = <String, LanguageWordings>{
         'en': {
           'key1': WordingEntry('Hello {user}', [
@@ -31,7 +31,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -51,7 +51,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 1);
       expect(mockLogger.messages[0],
@@ -72,7 +72,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 1);
       expect(mockLogger.messages[0],
@@ -93,7 +93,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 1);
       expect(mockLogger.messages[0],
@@ -114,7 +114,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -133,7 +133,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -152,7 +152,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -174,7 +174,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -191,7 +191,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });
@@ -212,7 +212,7 @@ void main() {
         },
       };
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0); // Should not report missing keys
     });
@@ -220,7 +220,7 @@ void main() {
     test('should handle empty wordings', () {
       final wordings = <String, LanguageWordings>{};
 
-      analyzer.analyze(wordings);
+      processor.process(wordings);
 
       expect(mockLogger.messages.length, 0);
     });

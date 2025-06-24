@@ -1,11 +1,11 @@
-import 'package:sync_wording/analysis/analysis_manager.dart';
 import 'package:sync_wording/wording.dart';
+import 'package:sync_wording/wording_processor/wording_processor_manager.dart';
 
-class PlaceholderMismatchAnalyzer extends Analyzer {
-  PlaceholderMismatchAnalyzer(super.logger);
+class PlaceholderMismatchProcessor extends WordingProcessor {
+  PlaceholderMismatchProcessor(super.logger);
 
   @override
-  void analyze(Wordings wordings) {
+  void process(Wordings wordings) {
     if (wordings.keys.length < 2) {
       return;
     }
@@ -19,11 +19,11 @@ class PlaceholderMismatchAnalyzer extends Analyzer {
       final Iterable<Iterable<PlaceholderCharac>?> placeholderCharacs =
           wordingsEntries.map((w) => w.placeholderCharacs);
 
-      _analyzeWordingPlaceholders(key, placeholderCharacs);
+      _processWordingPlaceholders(key, placeholderCharacs);
     }
   }
 
-  void _analyzeWordingPlaceholders(
+  void _processWordingPlaceholders(
       String key, Iterable<Iterable<PlaceholderCharac>?> placeholderCharacs) {
     final placeholderCounts =
         placeholderCharacs.map((placeholders) => placeholders?.length ?? 0);

@@ -178,5 +178,93 @@ languages:
         expect(e.toString(), contains('Missing required field: sheetId'));
       }
     });
+
+    test('should parse fallback configuration when enabled', () async {
+      await configFile.writeAsString('''
+sheetId: "test-sheet-id"
+output_dir: "lib/localizations"
+languages:
+  en:
+    column: 2
+  fr:
+    column: 3
+fallback:
+  enabled: true
+  default_language: "en"
+''');
+
+      final loader = WordingConfigLoader();
+      final config = await loader.loadConfiguration(configFile.path);
+
+      expect(config.fallback.enabled, isTrue);
+      expect(config.fallback.defaultLanguage, equals('en'));
+    });
+
+    test('should parse fallback configuration when disabled', () async {
+      await configFile.writeAsString('''
+sheetId: "test-sheet-id"
+output_dir: "lib/localizations"
+languages:
+  en:
+    column: 2
+  fr:
+    column: 3
+fallback:
+  enabled: false
+  default_language: "en"
+''');
+
+      final loader = WordingConfigLoader();
+      final config = await loader.loadConfiguration(configFile.path);
+
+      expect(config.fallback.enabled, isFalse);
+      expect(config.fallback.defaultLanguage, equals('en'));
+    });
+
+    test('should use disabled fallback when not specified', () async {
+      await configFile.writeAsString('''
+sheetId: "test-sheet-id"
+output_dir: "lib/localizations"
+languages:
+  en:
+    column: 2
+  fr:
+    column: 3
+''');
+
+      final loader = WordingConfigLoader();
+      final config = await loader.loadConfiguration(configFile.path);
+
+      expect(config.fallback.enabled, isFalse);
+      expect(config.fallback.defaultLanguage, equals(''));
+    });
+
+    test(
+        'should throw error when fallback enabled but default_language missing',
+        () async {
+      await configFile.writeAsString('''
+sheetId: "test-sheet-id"
+output_dir: "lib/localizations"
+languages:
+  en:
+    column: 2
+  fr:
+    column: 3
+fallback:
+  enabled: true
+''');
+
+      final loader = WordingConfigLoader();
+      try {
+        await loader.loadConfiguration(configFile.path);
+        fail('Expected an error to be thrown');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        expect(
+            e.toString(),
+            contains(
+                'Missing required field: default_language in fallback config'));
+      }
+    });
   });
 }

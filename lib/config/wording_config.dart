@@ -13,6 +13,20 @@ class LanguageConfig {
   LanguageConfig(this.locale, this.column);
 }
 
+class FallbackConfig {
+  final bool enabled;
+  final String defaultLanguage;
+
+  FallbackConfig(this.enabled, this.defaultLanguage);
+
+  /// Configuration that disables fallback behavior
+  factory FallbackConfig.disabled() => FallbackConfig(false, '');
+
+  /// Configuration that enables fallback to a default language
+  factory FallbackConfig.enabled(String defaultLanguage) =>
+      FallbackConfig(true, defaultLanguage);
+}
+
 class ValidationConfig {
   final int? column;
   final String? expected;
@@ -43,6 +57,7 @@ class WordingConfig {
   final int sheetStartIndex;
   final int keyColumn;
   final List<LanguageConfig> languages;
+  final FallbackConfig fallback;
   final ValidationConfig validation;
   final GenL10nConfig genL10n;
 
@@ -54,6 +69,7 @@ class WordingConfig {
     this.sheetStartIndex,
     this.keyColumn,
     this.languages,
+    this.fallback,
     this.validation,
     this.genL10n,
   );

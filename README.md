@@ -110,6 +110,19 @@ validation:
 
 If no `validation` specified, everything is considered as valid.
 
+### Fallback translations
+
+When a translation is missing in one language, you can configure the tool to automatically use the translation from a default language as fallback. This is useful to ensure all languages have complete translations.
+
+```yaml
+fallback:
+  enabled: true
+  default_language: "en"
+  # When a translation is missing in a language, use the translation from default_language
+```
+
+If `fallback` is not specified, no fallback behavior is applied and missing translations will be reported as warnings.
+
 ## Localization classes generation
 
 Executing this program will generate the `.arb` localization files.
@@ -172,6 +185,10 @@ languages:
 validation: # (Optional)
   column: 5
   expected: "OK"
+
+fallback: # (Optional)
+  enabled: true
+  default_language: "en"
 
 gen_l10n: # (Optional)
   auto_call: true

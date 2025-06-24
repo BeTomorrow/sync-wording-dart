@@ -69,6 +69,8 @@ class ConfigBuilder {
 
     final credentials =
         _parseCredentials(yamlData['credentials'] as Map<dynamic, dynamic>?);
+    final fallback =
+        _parseFallback(yamlData['fallback'] as Map<dynamic, dynamic>?);
     final validation =
         _parseValidation(yamlData['validation'] as Map<dynamic, dynamic>?);
     final genL10n =
@@ -86,6 +88,7 @@ class ConfigBuilder {
       sheetStartIndex,
       keyColumn,
       languages,
+      fallback ?? FallbackConfig.disabled(),
       validation ?? ValidationConfig.always(),
       genL10n,
     );
@@ -136,5 +139,22 @@ class ConfigBuilder {
   List<String> _parseSheetNames(List<dynamic>? sheetNames) {
     if (sheetNames == null) return [];
     return sheetNames.map((name) => name as String).toList();
+  }
+
+  FallbackConfig? _parseFallback(Map<dynamic, dynamic>? fallback) {
+    if (fallback == null) return null;
+
+    final enabled = fallback['enabled'] as bool? ?? false;
+    final defaultLanguage = fallback['default_language'] as String?;
+    if (enabled) {
+      if (defaultLanguage == null) {
+        throw Exception(
+            'Missing required field: default_language in fallback config');
+      }
+      return FallbackConfig.enabled(defaultLanguage);
+    } else {
+      // If fallback is disabled, keep the default_language if provided, else fallback to ''
+      return FallbackConfig(false, defaultLanguage ?? '');
+    }
   }
 }
