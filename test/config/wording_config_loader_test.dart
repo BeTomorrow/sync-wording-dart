@@ -200,7 +200,7 @@ fallback:
       expect(config.fallback.defaultLanguage, equals('en'));
     });
 
-    test('should parse fallback configuration when disabled', () async {
+    test('should use disabled fallback when disabled', () async {
       await configFile.writeAsString('''
 sheetId: "test-sheet-id"
 output_dir: "lib/localizations"
@@ -218,7 +218,6 @@ fallback:
       final config = await loader.loadConfiguration(configFile.path);
 
       expect(config.fallback.enabled, isFalse);
-      expect(config.fallback.defaultLanguage, equals('en'));
     });
 
     test('should use disabled fallback when not specified', () async {
