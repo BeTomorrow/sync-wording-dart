@@ -10,7 +10,8 @@ class XLSXConverter {
   final _parser = WordingParser();
 
   /// Convert the data set in the spreadsheet in Objects defined by the model
-  Future<Wordings> convert(Spreadsheet spreadsheet, WordingConfig config) async {
+  Future<Wordings> convert(
+      Spreadsheet spreadsheet, WordingConfig config) async {
     final sheetNames = config.sheetNames;
 
     Wordings wordings = {};
@@ -31,7 +32,8 @@ class XLSXConverter {
   }
 
   /// Convert the data set in the worksheet in Objects defined by the model
-  Future<Wordings> _convertWorksheet(Worksheet worksheet, WordingConfig config) async {
+  Future<Wordings> _convertWorksheet(
+      Worksheet worksheet, WordingConfig config) async {
     final languages = config.languages;
     final validator = Validator.get(config.validation);
 
@@ -49,7 +51,8 @@ class XLSXConverter {
       final allRows = await values.allRows(fromRow: 2);
 
       for (final row in allRows) {
-        _addWording(languageWordings, row, config.keyColumn, languageConfig.column, validator);
+        _addWording(languageWordings, row, config.keyColumn,
+            languageConfig.column, validator);
       }
     }
 

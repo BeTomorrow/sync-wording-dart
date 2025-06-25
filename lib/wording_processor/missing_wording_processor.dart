@@ -2,6 +2,10 @@ import 'package:sync_wording/config/wording_config.dart';
 import 'package:sync_wording/wording.dart';
 import 'package:sync_wording/wording_processor/wording_processor_manager.dart';
 
+/// A processor that checks for missing translations in the wordings
+/// It can be used with or without fallback translations
+/// If fallback translations are enabled, it will use the fallback translations
+/// If fallback translations are disabled, it will log a warning for each missing translation
 class MissingWordingProcessor extends WordingProcessor {
   final FallbackConfig fallbackConfig;
 

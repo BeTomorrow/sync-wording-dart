@@ -1,6 +1,8 @@
 import 'package:sync_wording/wording.dart';
 import 'package:sync_wording/wording_processor/wording_processor_manager.dart';
 
+/// A processor that checks for placeholder mismatches in the wordings
+/// It will log a warning for each placeholder mismatch (name or type) between languages
 class PlaceholderMismatchProcessor extends WordingProcessor {
   PlaceholderMismatchProcessor(super.logger);
 

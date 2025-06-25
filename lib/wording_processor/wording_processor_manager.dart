@@ -4,6 +4,7 @@ import 'package:sync_wording/wording.dart';
 import 'package:sync_wording/wording_processor/missing_wording_processor.dart';
 import 'package:sync_wording/wording_processor/placeholder_mismatch_processor.dart';
 
+/// A processor that validates and processes wordings
 abstract class WordingProcessor {
   final Logger logger;
 
@@ -12,6 +13,8 @@ abstract class WordingProcessor {
   void process(Wordings wordings);
 }
 
+/// Manages the processing and validation of wordings by running them through
+/// a series of [WordingProcessor]s like checking for missing translations and placeholder mismatches
 class WordingProcessorManager {
   final Wordings wordings;
   final FallbackConfig fallbackConfig;
