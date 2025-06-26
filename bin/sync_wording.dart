@@ -66,10 +66,22 @@ Future<void> main(List<String> arguments) async {
 
     /// Generate AppLocalization files
     if (config.genL10n.autoCall) {
-      if (config.genL10n.withFvm) {
-        await Process.run("fvm", ["flutter", "gen-l10n"]);
-      } else {
-        await Process.run("flutter", ["gen-l10n"]);
+      try {
+        logger.log("Generating localization Dart files...");
+
+        final result = config.genL10n.withFvm
+            ? await Process.run("fvm", ["flutter", "gen-l10n"])
+            : await Process.run("flutter", ["gen-l10n"]);
+
+        if (result.exitCode == 0) {
+          logger.log("✅ Localization Dart files generated successfully");
+        } else {
+          logger.log("❌ Failed to generate localization Dart files");
+          logger.log("Error: ${result.stderr}");
+          logger.log("Exit code: ${result.exitCode}");
+        }
+      } catch (e) {
+        logger.log("❌ Error executing gen-l10n command: $e");
       }
     }
   } catch (e) {
@@ -77,4 +89,5 @@ Future<void> main(List<String> arguments) async {
     httpClient.close();
     exit(1);
   }
+  exit(0);
 }

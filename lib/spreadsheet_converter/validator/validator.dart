@@ -6,7 +6,7 @@ sealed class Validator {
   static final List<_CheckValueValidator> _checkValueValidators = [];
 
   /// Abstract method called to validate or invalidate a worksheet row
-  bool isValid(List<String> row);
+  bool isValid(List<String?> row);
 
   /// Method that returns a validator object matching the specified config
   factory Validator.get(ValidationConfig config) {
@@ -30,7 +30,7 @@ sealed class Validator {
 class _AlwaysTrueValidator implements Validator {
   /// Always validates a translation row
   @override
-  bool isValid(List<String> row) => true;
+  bool isValid(List<String?> row) => true;
 }
 
 class _CheckValueValidator implements Validator {
@@ -42,7 +42,7 @@ class _CheckValueValidator implements Validator {
   /// Compare the value in the row a the specified column
   /// Returns true if value is the same than the expected one
   @override
-  bool isValid(List<String> row) {
+  bool isValid(List<String?> row) {
     if (row.length >= _column) {
       return row[_column - 1] == _expected;
     }
