@@ -31,7 +31,8 @@ class PlaceholderMismatchProcessor extends WordingProcessor {
         placeholderCharacs.map((placeholders) => placeholders?.length ?? 0);
 
     if (placeholderCounts.any((count) => count != placeholderCounts.first)) {
-      logger.log("⚠️ Placeholder mismatch for '$key'");
+      logger.log(
+          "⚠️ Placeholder mismatch for '$key': placeholders count mismatch");
       return;
     }
 
@@ -52,7 +53,8 @@ class PlaceholderMismatchProcessor extends WordingProcessor {
                       (c.type == null && placeholderType == null))) ??
               false;
           if (!hasMatch) {
-            logger.log("⚠️ Placeholder mismatch for '$key'");
+            logger.log(
+                "⚠️ Placeholder mismatch for '$key': placeholder type mismatch");
             return;
           }
         }
