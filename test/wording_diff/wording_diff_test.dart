@@ -20,7 +20,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, equals({'welcome', 'goodbye'}));
       expect(modifiedKeys, isEmpty);
@@ -43,7 +43,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, isEmpty);
@@ -66,7 +66,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, equals({'hello'}));
@@ -93,7 +93,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, equals({'welcome'}));
@@ -116,7 +116,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, isEmpty);
@@ -145,7 +145,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, equals({'welcome'}));
       expect(modifiedKeys, isEmpty);
@@ -166,7 +166,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, isEmpty);
@@ -192,7 +192,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, equals({'thanks'}));
       expect(modifiedKeys, equals({'hello'}));
@@ -229,7 +229,7 @@ void main() {
       };
 
       final diff = WordingDiff(oldWordings, newWordings);
-      final (addedKeys, modifiedKeys, removedKeys) = diff.diff();
+      final (addedKeys, modifiedKeys, removedKeys) = diff.getDifferences();
 
       expect(addedKeys, isEmpty);
       expect(modifiedKeys, equals({'welcome'}));

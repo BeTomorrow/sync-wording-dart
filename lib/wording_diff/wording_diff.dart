@@ -16,7 +16,7 @@ class WordingDiff {
     Set<String> addedKeys,
     Set<String> modifiedKeys,
     Set<String> removedKeys,
-  ) diff() {
+  ) getDifferences() {
     final allKeys = <String>{};
 
     for (final locale in oldWordings.keys) {
