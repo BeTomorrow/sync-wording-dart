@@ -6,8 +6,11 @@ import 'package:sync_wording/config/wording_config_loader.dart';
 import 'package:sync_wording/exporter/arb/arb_wording_exporter.dart';
 import 'package:sync_wording/google/google_auth.dart';
 import 'package:sync_wording/google/xlsx_drive.dart';
+import 'package:sync_wording/importer/arb/arb_wording_importer.dart';
 import 'package:sync_wording/logger/logger.dart';
 import 'package:sync_wording/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
+import 'package:sync_wording/wording_diff/wording_diff.dart';
+import 'package:sync_wording/wording_diff/wording_diff_logger.dart';
 import 'package:sync_wording/wording_processor/wording_processor_manager.dart';
 
 Future<void> main(List<String> arguments) async {
@@ -56,6 +59,18 @@ Future<void> main(List<String> arguments) async {
     final wordingProcessorManager =
         WordingProcessorManager(wordings, logger, config.fallback);
     wordingProcessorManager.process();
+
+    /// Verify differences between the existing wordings and the GSheets wordings
+    final importer = ARBWordingImporter();
+    final existingWordings = await importer.import({
+      "en": "${config.outputDir}/intl_en.arb",
+      "fr": "${config.outputDir}/intl_fr.arb",
+    });
+
+    /// Detect differences between the existing wordings and the GSheets wordings
+    final (addedKeys, modifiedKeys, removedKeys) =
+        WordingDiff(existingWordings, wordings).diff();
+    WordingDiffLogger(logger).log(addedKeys, modifiedKeys, removedKeys);
 
     /// Export ARB files containing the translations
     final exporter = ARBWordingExporter();

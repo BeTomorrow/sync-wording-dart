@@ -1,17 +1,9 @@
 import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/logger/logger.dart';
 import 'package:sync_wording/wording.dart';
 import 'package:sync_wording/wording_processor/missing_wording_processor.dart';
 import 'package:test/test.dart';
 
-class MockLogger implements Logger {
-  final List<String> messages = [];
-
-  @override
-  void log(String message) {
-    messages.add(message);
-  }
-}
+import '../mocks/mock_logger.dart';
 
 void main() {
   group('MissingWordingProcessor', () {

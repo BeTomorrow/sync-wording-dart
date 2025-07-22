@@ -1,25 +1,17 @@
-import 'package:sync_wording/logger/logger.dart';
 import 'package:sync_wording/wording.dart';
 import 'package:sync_wording/wording_processor/placeholder_mismatch_processor.dart';
 import 'package:test/test.dart';
 
-class MockLogger implements Logger {
-  final List<String> messages = [];
-
-  @override
-  void log(String message) {
-    messages.add(message);
-  }
-}
+import '../mocks/mock_logger.dart';
 
 void main() {
   group('PlaceholderMismatchProcessor', () {
-    late MockLogger mockLogger;
+    late MockLogger logger;
     late PlaceholderMismatchProcessor processor;
 
     setUp(() {
-      mockLogger = MockLogger();
-      processor = PlaceholderMismatchProcessor(mockLogger);
+      logger = MockLogger();
+      processor = PlaceholderMismatchProcessor(logger);
     });
 
     test('should not process with less than 2 languages', () {
@@ -33,7 +25,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should detect placeholder count mismatch', () {
@@ -53,9 +45,11 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 1);
-      expect(mockLogger.messages[0],
-          contains("⚠️ Placeholder mismatch for 'key1'"));
+      expect(logger.messages.length, 1);
+      expect(
+        logger.messages[0],
+        contains("⚠️ Placeholder mismatch for 'key1'"),
+      );
     });
 
     test('should detect placeholder name mismatch', () {
@@ -74,9 +68,11 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 1);
-      expect(mockLogger.messages[0],
-          contains("⚠️ Placeholder mismatch for 'key1'"));
+      expect((logger).messages.length, 1);
+      expect(
+        (logger).messages[0],
+        contains("⚠️ Placeholder mismatch for 'key1'"),
+      );
     });
 
     test('should detect placeholder type mismatch', () {
@@ -95,9 +91,11 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 1);
-      expect(mockLogger.messages[0],
-          contains("⚠️ Placeholder mismatch for 'key1'"));
+      expect(logger.messages.length, 1);
+      expect(
+        logger.messages[0],
+        contains("⚠️ Placeholder mismatch for 'key1'"),
+      );
     });
 
     test('should not detect placeholder format mismatch', () {
@@ -116,7 +114,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should handle simple placeholders without type', () {
@@ -135,7 +133,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should handle typed placeholders correctly', () {
@@ -154,7 +152,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should handle mixed simple and typed placeholders', () {
@@ -176,7 +174,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should handle entries without placeholders', () {
@@ -193,7 +191,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
 
     test('should handle missing keys in some languages', () {
@@ -214,7 +212,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0); // Should not report missing keys
+      expect(logger.messages.length, 0); // Should not report missing keys
     });
 
     test('should handle empty wordings', () {
@@ -222,7 +220,7 @@ void main() {
 
       processor.process(wordings);
 
-      expect(mockLogger.messages.length, 0);
+      expect(logger.messages.length, 0);
     });
   });
 }
