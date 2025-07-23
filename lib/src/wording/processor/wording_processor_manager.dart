@@ -1,8 +1,8 @@
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/logger/logger.dart';
-import 'package:sync_wording/wording/processor/missing_wording_processor.dart';
-import 'package:sync_wording/wording/processor/placeholder_mismatch_processor.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/logger/logger.dart';
+import 'package:sync_wording/src/wording/processor/missing_wording_processor.dart';
+import 'package:sync_wording/src/wording/processor/placeholder_mismatch_processor.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 /// A processor that validates and processes wordings
 abstract class WordingProcessor {

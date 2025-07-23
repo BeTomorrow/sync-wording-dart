@@ -1,5 +1,5 @@
-import 'package:sync_wording/wording/diff/wording_diff.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/wording/diff/wording_diff.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
 void main() {

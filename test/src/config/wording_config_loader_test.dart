@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/config/wording_config_loader.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/config/wording_config_loader.dart';
 import 'package:test/test.dart';
 
 const _defaultCredentialsFile = ".google_access_token.json";

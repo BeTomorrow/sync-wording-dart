@@ -1,5 +1,5 @@
-import 'package:sync_wording/wording/processor/wording_processor_manager.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/wording/processor/wording_processor_manager.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 /// A processor that checks for placeholder mismatches in the wordings
 /// It will log a warning for each placeholder mismatch (name or type) between languages

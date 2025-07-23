@@ -1,4 +1,4 @@
-import 'package:sync_wording/config/wording_config.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
 
 /// Class used to validate or invalidate a translation
 sealed class Validator {

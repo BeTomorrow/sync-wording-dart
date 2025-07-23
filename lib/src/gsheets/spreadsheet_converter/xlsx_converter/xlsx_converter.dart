@@ -1,8 +1,8 @@
 import 'package:googleapis/sheets/v4.dart';
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/gsheets/spreadsheet_converter/validator/validator.dart';
-import 'package:sync_wording/gsheets/spreadsheet_converter/wording_parser.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet_converter/validator/validator.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet_converter/wording_parser.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 class XLSXConverter {
   final _parser = WordingParser();

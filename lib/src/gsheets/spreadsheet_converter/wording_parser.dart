@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 // Regex to match placeholders with or without type/format
 const _placeholderRegex =

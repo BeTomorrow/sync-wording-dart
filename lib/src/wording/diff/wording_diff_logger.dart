@@ -1,4 +1,4 @@
-import 'package:sync_wording/logger/logger.dart';
+import 'package:sync_wording/src/logger/logger.dart';
 
 class WordingDiffLogger {
   final Logger logger;

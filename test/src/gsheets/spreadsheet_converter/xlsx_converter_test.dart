@@ -1,6 +1,6 @@
 import 'package:googleapis/sheets/v4.dart';
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/gsheets/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
 import 'package:test/test.dart';
 
 void main() {

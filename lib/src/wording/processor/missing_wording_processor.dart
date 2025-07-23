@@ -1,6 +1,6 @@
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/wording/processor/wording_processor_manager.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/wording/processor/wording_processor_manager.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 /// A processor that checks for missing translations in the wordings
 /// It can be used with or without fallback translations

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:sync_wording/arb/importer/wording_importer.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/arb/importer/wording_importer.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 class ARBWordingImporter extends WordingImporter {
   static const _placeholdersKey = "placeholders";

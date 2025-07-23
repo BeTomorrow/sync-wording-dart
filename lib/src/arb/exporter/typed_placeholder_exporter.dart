@@ -1,4 +1,4 @@
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 /// Generic class dedicated to create the PlaceholderCharac data
 /// ready to be exported in the ARB file

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:sync_wording/arb/exporter/arb_wording_exporter.dart';
-import 'package:sync_wording/arb/importer/arb_wording_importer.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/arb/exporter/arb_wording_exporter.dart';
+import 'package:sync_wording/src/arb/importer/arb_wording_importer.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
 void main() {

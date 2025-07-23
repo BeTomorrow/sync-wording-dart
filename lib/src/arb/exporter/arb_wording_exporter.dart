@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:sync_wording/arb/exporter/typed_placeholder_exporter.dart';
-import 'package:sync_wording/arb/exporter/wording_exporter.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/arb/exporter/typed_placeholder_exporter.dart';
+import 'package:sync_wording/src/arb/exporter/wording_exporter.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 const _placeholdersKey = "placeholders";
 

@@ -1,6 +1,6 @@
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/wording/processor/missing_wording_processor.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/wording/processor/missing_wording_processor.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/mock_logger.dart';

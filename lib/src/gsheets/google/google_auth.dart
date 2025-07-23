@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
-import 'package:sync_wording/config/wording_config.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
 
 /// Google scopes needed to access the spreadsheet
 const _scopes = [

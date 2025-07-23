@@ -1,5 +1,5 @@
-import 'package:sync_wording/wording/processor/placeholder_mismatch_processor.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/wording/processor/placeholder_mismatch_processor.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/mock_logger.dart';
