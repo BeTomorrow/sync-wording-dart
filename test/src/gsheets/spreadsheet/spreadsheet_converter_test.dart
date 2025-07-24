@@ -1,14 +1,14 @@
 import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_converter.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('XLSXConverter', () {
-    late XLSXConverter converter;
+  group('SpreadsheetConverter', () {
+    late SpreadsheetConverter converter;
 
     setUp(() {
-      converter = XLSXConverter();
+      converter = SpreadsheetConverter();
     });
 
     group('convert', () {
@@ -26,7 +26,7 @@ void main() {
         });
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result.length, 2);
         expect(result['en']!.length, 3);
@@ -53,8 +53,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convert(spreadsheet, configWithSheetNames);
+        final result = await converter.convertToWordings(
+            spreadsheet, configWithSheetNames);
 
         expect(result['en']!.length, 1);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -75,8 +75,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convert(spreadsheet, configWithEmptySheetNames);
+        final result = await converter.convertToWordings(
+            spreadsheet, configWithEmptySheetNames);
 
         expect(result['en']!.length, 2);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -87,7 +87,7 @@ void main() {
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({});
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result.length, 2);
         expect(result['en']!.isEmpty, true);
@@ -109,8 +109,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convert(spreadsheet, configWithValidation);
+        final result = await converter.convertToWordings(
+            spreadsheet, configWithValidation);
 
         // Only rows with 'OK' in column 4 should be included
         expect(result['en']!.length, 2);
@@ -144,8 +144,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convert(spreadsheet, configWithAlwaysValidation);
+        final result = await converter.convertToWordings(
+            spreadsheet, configWithAlwaysValidation);
 
         expect(result['en']!.length, 3);
         expect(result['fr']!.length, 3);
@@ -169,7 +169,7 @@ void main() {
         });
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result['en']!.length, 2);
         expect(result['fr']!.length, 2);
@@ -188,8 +188,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convert(spreadsheet, configWithStartIndex);
+        final result = await converter.convertToWordings(
+            spreadsheet, configWithStartIndex);
 
         expect(result['en']!.length, 1);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -203,7 +203,7 @@ void main() {
         });
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);
@@ -215,7 +215,7 @@ void main() {
         });
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);
@@ -227,7 +227,7 @@ void main() {
         });
 
         final result =
-            await converter.convert(spreadsheet, testWordingConfig());
+            await converter.convertToWordings(spreadsheet, testWordingConfig());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);

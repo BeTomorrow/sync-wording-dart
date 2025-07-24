@@ -17,3 +17,9 @@ class WordingEntry {
 
 typedef LanguageWordings = Map<String, WordingEntry>;
 typedef Wordings = Map<String, LanguageWordings>;
+
+extension WordingsExtension on Wordings {
+  List<String> get keys => keys.toList();
+
+  String value(String key, String locale) => this[locale]![key]!.value;
+}

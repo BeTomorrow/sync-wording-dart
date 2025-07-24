@@ -1,40 +1,39 @@
 import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet_converter/validator/validator.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet_converter/wording_parser.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_parser.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/validator.dart';
 import 'package:sync_wording/src/wording/wording.dart';
 
-class XLSXConverter {
-  final _parser = WordingParser();
+class SpreadsheetConverter {
+  final _parser = SpreadsheetParser();
 
   /// Convert the data set in the spreadsheet in Objects defined by the model
-  Future<Wordings> convert(
-      Spreadsheet spreadsheet, WordingConfig config) async {
-    final sheetNames = config.sheetNames;
-
+  Future<Wordings> convertToWordings(
+    Spreadsheet spreadsheet,
+    WordingConfig config,
+  ) async {
     Wordings wordings = {};
     for (final l in config.languages) {
       wordings[l.locale] = {};
     }
 
-    final sheets = spreadsheet.sheets;
-    if (sheets != null) {
-      for (final sheet in sheets) {
-        if (sheetNames.isEmpty ||
-            sheetNames.contains(sheet.properties?.title)) {
-          Wordings worksheetResult = await _convertWorksheet(sheet, config);
+    final sheets = spreadsheet.sheets ?? [];
+    for (final sheet in sheets) {
+      if (config.isSheetNameValid(sheet.properties?.title)) {
+        Wordings worksheetResult = await _convertSheetToWordings(sheet, config);
 
-          for (final l in worksheetResult.keys) {
-            wordings[l]!.addAll(worksheetResult[l]!);
-          }
+        for (final l in worksheetResult.keys) {
+          wordings[l]!.addAll(worksheetResult[l]!);
         }
       }
     }
+
     return wordings;
   }
 
   /// Convert the data set in the worksheet in Objects defined by the model
-  Future<Wordings> _convertWorksheet(Sheet sheet, WordingConfig config) async {
+  Future<Wordings> _convertSheetToWordings(
+      Sheet sheet, WordingConfig config) async {
     final languages = config.languages;
     final validator = Validator.get(config.validation);
 

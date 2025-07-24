@@ -2,18 +2,17 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
-import 'package:sync_wording/arb/exporter/arb_wording_exporter.dart';
-import 'package:sync_wording/arb/importer/arb_wording_importer.dart';
-import 'package:sync_wording/config/wording_config.dart';
-import 'package:sync_wording/config/wording_config_loader.dart';
-import 'package:sync_wording/gsheets/google/google_auth.dart';
-import 'package:sync_wording/gsheets/google/xlsx_drive.dart';
-import 'package:sync_wording/gsheets/spreadsheet_converter/xlsx_converter/xlsx_converter.dart';
-import 'package:sync_wording/logger/logger.dart';
-import 'package:sync_wording/wording/diff/wording_diff.dart';
-import 'package:sync_wording/wording/diff/wording_diff_logger.dart';
-import 'package:sync_wording/wording/processor/wording_processor_manager.dart';
-import 'package:sync_wording/wording/wording.dart';
+import 'package:sync_wording/src/arb/exporter/arb_wording_exporter.dart';
+import 'package:sync_wording/src/arb/importer/arb_wording_importer.dart';
+import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/config/wording_config_loader.dart';
+import 'package:sync_wording/src/gsheets/google/google_auth.dart';
+import 'package:sync_wording/src/gsheets/google/xlsx_drive.dart';
+import 'package:sync_wording/src/logger/logger.dart';
+import 'package:sync_wording/src/wording/diff/wording_diff.dart';
+import 'package:sync_wording/src/wording/diff/wording_diff_logger.dart';
+import 'package:sync_wording/src/wording/processor/wording_processor_manager.dart';
+import 'package:sync_wording/src/wording/wording.dart';
 
 Future<void> main(List<String> arguments) async {
   final logger = ConsoleLogger();
@@ -42,6 +41,7 @@ Future<void> main(List<String> arguments) async {
     httpClient.close();
     exit(1);
   }
+  httpClient.close();
   exit(0);
 }
 
@@ -65,8 +65,38 @@ ArgParser _buildArgsParser() => ArgParser()
     negatable: false,
   );
 
+Future<void> _uploadToGSheets(
+  WordingConfig config,
+  http.Client httpClient,
+  Logger logger,
+) async {
+  logger.log("Starting upload to Google Sheets...");
+
+  final localWordings = await _loadArbWordings(config);
+
+  // Upload to Google Sheets
+  await _uploadWordingsToGSheets(localWordings, config, httpClient, logger);
+  logger.log("✅ Upload completed successfully!");
+}
+
+Future<void> _uploadWordingsToGSheets(
+  Wordings wordings,
+  WordingConfig config,
+  http.Client httpClient,
+  Logger logger,
+) async {
+  logger.log("📤 Uploading to Google Sheets...");
+
+  final client =
+      await GoogleAuth().authenticate(config.credentials, httpClient);
+  await XLSXDrive(client, logger).upload(config, wordings);
+}
+
 Future<void> _downloadFromGSheets(
-    WordingConfig config, http.Client httpClient, Logger logger) async {
+  WordingConfig config,
+  http.Client httpClient,
+  Logger logger,
+) async {
   final wordings = await _loadGSheetsWordings(config, httpClient, logger);
 
   final existingWordings = await _loadArbWordings(config);
@@ -81,65 +111,6 @@ Future<void> _downloadFromGSheets(
   }
 }
 
-Future<void> _uploadToGSheets(
-  WordingConfig config,
-  http.Client httpClient,
-  Logger logger,
-) async {
-  logger.log("Starting upload to Google Sheets...");
-
-  final localWordings = await _loadArbWordings(config);
-
-  final gsheetsWordings =
-      await _loadGSheetsWordings(config, httpClient, logger);
-
-  final (addedKeys, modifiedKeys, removedKeys) =
-      WordingDiff(gsheetsWordings, localWordings).getDifferences();
-  WordingDiffLogger(logger).log(addedKeys, modifiedKeys, removedKeys);
-
-  // Check for destructive changes
-  if (removedKeys.isNotEmpty || modifiedKeys.isNotEmpty) {
-    logger.log(
-        "\n⚠️  WARNING: This operation will modify or remove existing data in Google Sheets!");
-    logger.log("📝 Keys to be modified: ${modifiedKeys.join(', ')}");
-    logger.log("🗑️  Keys to be removed: ${removedKeys.join(', ')}");
-
-    final confirmed = await _askForConfirmation(logger);
-    if (!confirmed) {
-      logger.log("❌ Upload cancelled by user");
-      return;
-    }
-  }
-
-  // Upload to Google Sheets
-  await _uploadWordingsToGSheets(localWordings, config, httpClient, logger);
-  logger.log("✅ Upload completed successfully!");
-}
-
-Future<bool> _askForConfirmation(Logger logger) async {
-  logger.log("\nDo you want to continue? (y/N): ");
-
-  final input = stdin.readLineSync()?.toLowerCase().trim();
-  return input == 'y' || input == 'yes';
-}
-
-Future<void> _uploadWordingsToGSheets(
-  Wordings wordings,
-  WordingConfig config,
-  http.Client httpClient,
-  Logger logger,
-) async {
-  logger.log("📤 Uploading to Google Sheets...");
-
-  // TODO: Implement the actual upload logic
-  // This would require implementing a method to convert Wordings back to spreadsheet format
-  // and upload it to Google Sheets
-
-  logger.log("⚠️  Upload functionality not yet implemented");
-  logger.log(
-      "This would convert the local wordings back to spreadsheet format and upload to Google Sheets");
-}
-
 Future<Wordings> _loadGSheetsWordings(
   WordingConfig config,
   http.Client httpClient,
@@ -148,15 +119,14 @@ Future<Wordings> _loadGSheetsWordings(
   /// Authenticate to Google and retrieve specified spreadsheet
   final client =
       await GoogleAuth().authenticate(config.credentials, httpClient);
-  final spreadsheet = await XLSXDrive(client).getSpreadsheet(config.sheetId);
-
-  /// Convert the spreadsheet to the internal model
-  final wordings = await XLSXConverter().convert(spreadsheet, config);
-  httpClient.close();
+  final wordings = await XLSXDrive(client, logger).downloadWordings(config);
 
   /// Detect warnings and fix errors if possible
-  final wordingProcessorManager =
-      WordingProcessorManager(wordings, logger, config.fallback);
+  final wordingProcessorManager = WordingProcessorManager(
+    wordings,
+    logger,
+    config.fallback,
+  );
   wordingProcessorManager.process();
 
   return wordings;
@@ -191,7 +161,10 @@ Future<void> _exportARBs(
   final exporter = ARBWordingExporter();
   for (final locale in wordings.keys) {
     await exporter.export(
-        locale, wordings[locale]!, "$outputDir/intl_$locale.arb");
+      locale,
+      wordings[locale]!,
+      "$outputDir/intl_$locale.arb",
+    );
   }
 }
 

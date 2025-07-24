@@ -1,13 +1,13 @@
-import 'package:sync_wording/src/gsheets/spreadsheet_converter/wording_parser.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_parser.dart';
 import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("WordingParser", () {
+  group("SpreadsheetParser", () {
     /// VALID CASES
 
     test("no placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello everybody");
 
@@ -16,7 +16,7 @@ void main() {
     });
 
     test("simple placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user}");
 
@@ -29,7 +29,7 @@ void main() {
     });
 
     test("type placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user|String}");
 
@@ -42,7 +42,7 @@ void main() {
     });
 
     test("type alphanumeric placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user1|String}");
 
@@ -55,7 +55,7 @@ void main() {
     });
 
     test("type and format placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result =
           parser.parse("It's {date|DateTime|dd/MM/yyyy:hh'h'mm'm'ss}");
@@ -69,7 +69,7 @@ void main() {
     });
 
     test("pipes allowed in format", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result =
           parser.parse("It's {date|DateTime|dd/MM/yyyy hh|mm|ss}");
@@ -83,7 +83,7 @@ void main() {
     });
 
     test("multiple placeholders", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse(
           "Hello {user}. It's {meteo|String} at {date|DateTime|dd/MM/yyyy : hh'h'mm'm'ss}");
@@ -103,7 +103,7 @@ void main() {
     });
 
     test("simple plural", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result =
           parser.parse("{days, plural, zero{} one{1 day} other{many days}}");
@@ -114,7 +114,7 @@ void main() {
     });
 
     test("placeholder in plural", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser
           .parse("{days, plural, zero{} one{1 day} other{{days|int} days}}");
@@ -131,7 +131,7 @@ void main() {
     /// INVALID CASES
 
     test("placeholder with space", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {us er}");
 
@@ -140,7 +140,7 @@ void main() {
     });
 
     test("no placeholder", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {|int}");
 
@@ -149,7 +149,7 @@ void main() {
     });
 
     test("no type info", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user|}");
 
@@ -158,7 +158,7 @@ void main() {
     });
 
     test("type info with space", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user|Str ing}");
 
@@ -167,7 +167,7 @@ void main() {
     });
 
     test("no format info", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user|String|}");
 
@@ -176,7 +176,7 @@ void main() {
     });
 
     test("no type and no format info", () {
-      final parser = WordingParser();
+      final parser = SpreadsheetParser();
 
       final WordingEntry result = parser.parse("Hello {user||}");
 

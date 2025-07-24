@@ -8,11 +8,11 @@ const _placeholderRegex =
 const _separator = "|";
 
 /// Main parser class that coordinates the parsing process
-class WordingParser {
+class SpreadsheetParser {
   final PlaceholderExtractor _placeholderExtractor;
   final PlaceholderFormatter _placeholderFormatter;
 
-  WordingParser({
+  SpreadsheetParser({
     PlaceholderExtractor? placeholderExtractor,
     PlaceholderFormatter? placeholderFormatter,
   })  : _placeholderExtractor = placeholderExtractor ?? PlaceholderExtractor(),
@@ -40,19 +40,19 @@ class WordingParser {
 
 /// Class responsible for extracting placeholders from text
 class PlaceholderExtractor {
-  List<PlaceholderMatch> extractPlaceholders(String text) {
+  List<_PlaceholderMatch> extractPlaceholders(String text) {
     final matches = RegExp(_placeholderRegex).allMatches(text).toList();
     return matches.map((match) {
       final matchedStr = text.substring(match.start, match.end);
       final content = matchedStr.substring(1, matchedStr.length - 1);
-      return PlaceholderMatch(match.start, match.end, content);
+      return _PlaceholderMatch(match.start, match.end, content);
     }).toList();
   }
 }
 
 /// Class responsible for formatting text and creating placeholder characteristics
 class PlaceholderFormatter {
-  String formatText(String originalText, List<PlaceholderMatch> placeholders) {
+  String formatText(String originalText, List<_PlaceholderMatch> placeholders) {
     var formattedText = originalText;
     for (var i = placeholders.length - 1; i >= 0; i--) {
       final placeholder = placeholders[i];
@@ -67,7 +67,7 @@ class PlaceholderFormatter {
   }
 
   List<PlaceholderCharac>? createCharacteristics(
-      List<PlaceholderMatch> placeholders) {
+      List<_PlaceholderMatch> placeholders) {
     if (placeholders.isEmpty) return null;
 
     final characteristics = <PlaceholderCharac>[];
@@ -98,7 +98,7 @@ class PlaceholderFormatter {
     return pipeIndex == -1 ? content : content.substring(0, pipeIndex);
   }
 
-  TypeAndFormat? _extractTypeAndFormat(String content) {
+  _TypeAndFormat? _extractTypeAndFormat(String content) {
     final pipeIndex = content.indexOf(_separator);
     if (pipeIndex == -1) return null;
 
@@ -106,7 +106,7 @@ class PlaceholderFormatter {
     final secondPipeIndex = typeAndFormat.indexOf(_separator);
 
     if (secondPipeIndex == -1) {
-      return TypeAndFormat(typeAndFormat, null);
+      return _TypeAndFormat(typeAndFormat, null);
     }
 
     final type = typeAndFormat.substring(0, secondPipeIndex);
@@ -116,23 +116,23 @@ class PlaceholderFormatter {
       return null;
     }
 
-    return TypeAndFormat(type, format);
+    return _TypeAndFormat(type, format);
   }
 }
 
 /// Class representing a placeholder match in the text
-class PlaceholderMatch {
+class _PlaceholderMatch {
   final int start;
   final int end;
   final String content;
 
-  PlaceholderMatch(this.start, this.end, this.content);
+  _PlaceholderMatch(this.start, this.end, this.content);
 }
 
 /// Class representing type and format information for a placeholder
-class TypeAndFormat {
+class _TypeAndFormat {
   final String type;
   final String? format;
 
-  TypeAndFormat(this.type, this.format);
+  _TypeAndFormat(this.type, this.format);
 }

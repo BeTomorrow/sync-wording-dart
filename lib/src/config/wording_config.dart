@@ -73,4 +73,7 @@ class WordingConfig {
     this.validation,
     this.genL10n,
   );
+
+  bool isSheetNameValid(String? sheetName) =>
+      sheetNames.isEmpty || sheetNames.contains(sheetName);
 }
