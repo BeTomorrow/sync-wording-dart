@@ -85,8 +85,6 @@ Future<void> _uploadWordingsToGSheets(
   http.Client httpClient,
   Logger logger,
 ) async {
-  logger.log("📤 Uploading to Google Sheets...");
-
   final client =
       await GoogleAuth().authenticate(config.credentials, httpClient);
   await XLSXDrive(client, logger).upload(config, wordings);

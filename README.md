@@ -6,10 +6,10 @@ This tool allows you to manage your app's wording with a simple Google Sheets fi
 
 You can find a sample sheet [here](https://docs.google.com/spreadsheets/d/18Zf_XSU80j_I_VOp9Z4ShdOeUydR6Odyty-ExGBZaz4/edit?usp=sharing), but it's just a simple sheet with one column for keys and columns for languages like this:
 
-| Keys                 | English   | French |
-| -------------------- | --------- | ------ |
-| user.firstname_title | Firstname | Prénom |
-| user.lastname_title  | Lastname  | Nom    |
+| Keys           | English   | French |
+| -------------- | --------- | ------ |
+| user.firstname | Firstname | Prénom |
+| user.lastname  | Lastname  | Nom    |
 
 ## Installation
 

@@ -42,8 +42,14 @@ class XLSXDrive {
     final existingsWordings =
         await _converter.convertToWordings(existingSpreadsheet, config);
 
+    // Detect differences between existing and new wordings
     final (addedKeys, modifiedKeys, removedKeys) =
         WordingDiff(existingsWordings, wordings).getDifferences();
+
+    if (addedKeys.isEmpty && modifiedKeys.isEmpty && removedKeys.isEmpty) {
+      _logger.log("No changes to upload", color: LogColor.blue);
+      return;
+    }
 
     final requests = <Request>[];
     final requestFactory = SpreadsheetRequestFactory(_logger);
