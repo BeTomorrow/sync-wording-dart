@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
 import 'package:sync_wording/src/gsheets/spreadsheet/helper/spreadsheet_helper.dart';
@@ -15,20 +18,16 @@ class SpreadsheetRequestFactory {
     Wordings wordings,
     WordingConfig config,
   ) {
-    if (keysToAdd.isEmpty) {
-      return null;
-    }
+    if (keysToAdd.isEmpty) return null;
+
+    final sheet = spreadsheet.firstValidSheet(config);
+    if (sheet == null) return null;
 
     for (final addedKey in keysToAdd) {
       _logger.log("[ADD   ] $addedKey", color: LogColor.green);
     }
 
-    final sheet = spreadsheet.sheets!.firstWhere(
-        (sheet) => config.isSheetNameValid(sheet.properties?.title));
-
-    final addRequestRowIndex = sheet.data!
-        .expand<RowData>((gridData) => gridData.rowData ?? [])
-        .length;
+    final addRequestRowIndex = sheet.firstFreeRowIndex;
 
     return Request(
       updateCells: UpdateCellsRequest(
@@ -39,18 +38,7 @@ class SpreadsheetRequestFactory {
           columnIndex: 0,
         ),
         rows: keysToAdd
-            .map((addedKey) => RowData(values: [
-                  CellData(
-                      userEnteredValue: ExtendedValue(stringValue: addedKey)),
-                  for (final language in config.languages)
-                    CellData(
-                        userEnteredValue: ExtendedValue(
-                            stringValue:
-                                wordings[language.locale]![addedKey]!.value)),
-                  CellData(
-                      userEnteredValue: ExtendedValue(
-                          stringValue: config.validation.expected))
-                ]))
+            .map((addedKey) => _rowData(addedKey, wordings, config))
             .toList(),
       ),
     );
@@ -78,20 +66,7 @@ class SpreadsheetRequestFactory {
             rowIndex: keyLocation.rowIndex!,
             columnIndex: 0,
           ),
-          rows: [
-            RowData(values: [
-              CellData(
-                  userEnteredValue: ExtendedValue(stringValue: keyToUpdate)),
-              for (final language in config.languages)
-                CellData(
-                    userEnteredValue: ExtendedValue(
-                        stringValue:
-                            wordings[language.locale]![keyToUpdate]!.value)),
-              CellData(
-                  userEnteredValue:
-                      ExtendedValue(stringValue: config.validation.expected))
-            ])
-          ],
+          rows: [_rowData(keyToUpdate, wordings, config)],
         ),
       );
     }
@@ -125,4 +100,37 @@ class SpreadsheetRequestFactory {
 
     return null;
   }
+
+  RowData _rowData(String key, Wordings wordings, WordingConfig config) {
+    final numberOfColumns = [
+      ...config.languages.map((l) => l.column),
+      config.keyColumn,
+      config.validation.column ?? 0,
+    ].reduce(max);
+
+    final rowDataValues =
+        List<CellData>.generate(numberOfColumns, (cellDataIndex) {
+      if (cellDataIndex == config.keyColumn - 1) {
+        return _cellData(key);
+      }
+
+      if (config.validation.column != null &&
+          cellDataIndex == config.validation.column! - 1) {
+        return _cellData(config.validation.expected ?? '');
+      }
+
+      final language = config.languages
+          .firstWhereOrNull((l) => l.column == cellDataIndex + 1);
+      if (language != null) {
+        return _cellData(wordings.value(key, language.locale));
+      }
+
+      return _cellData('');
+    });
+
+    return RowData(values: rowDataValues);
+  }
+
+  CellData _cellData(String value) =>
+      CellData(userEnteredValue: ExtendedValue(stringValue: value));
 }

@@ -35,6 +35,11 @@ extension SpreadsheetExtension on Spreadsheet {
       (sheet) => config.isSheetNameValid(sheet.properties?.title));
 }
 
+extension SheetExtension on Sheet {
+  int get firstFreeRowIndex =>
+      this.data!.expand<RowData>((gridData) => gridData.rowData ?? []).length;
+}
+
 SpreadsheetKeyLocation findKeyLocation(
   Spreadsheet spreadsheet,
   String key,
