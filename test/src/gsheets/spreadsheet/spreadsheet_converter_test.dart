@@ -1,7 +1,9 @@
-import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
 import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_converter.dart';
 import 'package:test/test.dart';
+
+import '../../fixture_and_mocks/spreadsheet_fixture.dart';
+import '../../fixture_and_mocks/wording_config_fixture.dart';
 
 void main() {
   group('SpreadsheetConverter', () {
@@ -25,8 +27,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result.length, 2);
         expect(result['en']!.length, 3);
@@ -40,7 +42,8 @@ void main() {
       });
 
       test('should filter sheets by sheetNames when specified', () async {
-        final configWithSheetNames = testWordingConfig(sheetNames: ['Sheet1']);
+        final configWithSheetNames =
+            WordingConfigFixture.forTest(sheetNames: ['Sheet1']);
 
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({
           'Sheet1': [
@@ -62,7 +65,8 @@ void main() {
       });
 
       test('should process all sheets when sheetNames is empty', () async {
-        final configWithEmptySheetNames = testWordingConfig(sheetNames: []);
+        final configWithEmptySheetNames =
+            WordingConfigFixture.forTest(sheetNames: []);
 
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({
           'Sheet1': [
@@ -86,8 +90,8 @@ void main() {
       test('should handle empty spreadsheet', () async {
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({});
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result.length, 2);
         expect(result['en']!.isEmpty, true);
@@ -95,7 +99,7 @@ void main() {
       });
 
       test('should ignore rows not validated by Validator', () async {
-        final configWithValidation = testWordingConfig(
+        final configWithValidation = WordingConfigFixture.forTest(
           validation: ValidationConfig.withExpected(4, 'OK'),
         );
 
@@ -131,7 +135,7 @@ void main() {
       test('should include all rows when using ValidationConfig.always',
           () async {
         // Use ValidationConfig.always to accept all rows
-        final configWithAlwaysValidation = testWordingConfig(
+        final configWithAlwaysValidation = WordingConfigFixture.forTest(
           validation: ValidationConfig.always(),
         );
 
@@ -168,8 +172,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.length, 2);
         expect(result['fr']!.length, 2);
@@ -178,7 +182,8 @@ void main() {
       });
 
       test('should skip header row based on sheetStartIndex', () async {
-        final configWithStartIndex = testWordingConfig(sheetStartIndex: 3);
+        final configWithStartIndex =
+            WordingConfigFixture.forTest(sheetStartIndex: 3);
 
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({
           'TestSheet': [
@@ -202,8 +207,8 @@ void main() {
           ],
         });
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);
@@ -214,8 +219,8 @@ void main() {
           'TestSheet': null,
         });
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);
@@ -226,64 +231,12 @@ void main() {
           'TestSheet': [],
         });
 
-        final result =
-            await converter.convertToWordings(spreadsheet, testWordingConfig());
+        final result = await converter.convertToWordings(
+            spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
         expect(result['fr']!.isEmpty, true);
       });
     });
   });
-}
-
-class SpreadsheetFixture {
-  static Spreadsheet fromSheetWithRows(
-      Map<String, List<List<String>>?> sheets) {
-    return Spreadsheet(
-      sheets: sheets.entries
-          .map((sheet) => Sheet(
-                properties: SheetProperties(title: sheet.key),
-                data: [gridDataFromRows(sheet.value)],
-              ))
-          .toList(),
-    );
-  }
-
-  static GridData gridDataFromRows(List<List<String>>? rows) {
-    return GridData(
-      rowData: rows
-              ?.map((row) => RowData(
-                    values: row
-                        .map((cell) => CellData(formattedValue: cell))
-                        .toList(),
-                  ))
-              .toList() ??
-          [],
-    );
-  }
-}
-
-WordingConfig testWordingConfig({
-  String? sheetId,
-  List<String>? sheetNames,
-  String? outputDir,
-  int? sheetStartIndex,
-  int? keyColumn,
-  List<LanguageConfig>? languages,
-  FallbackConfig? fallback,
-  ValidationConfig? validation,
-  GenL10nConfig? genL10n,
-}) {
-  return WordingConfig(
-    CredentialsConfig('clientId', 'clientSecret', 'credentials.json'),
-    sheetId ?? 'test-sheet-id',
-    sheetNames ?? [],
-    outputDir ?? 'outputs',
-    sheetStartIndex ?? 2,
-    keyColumn ?? 1,
-    languages ?? [LanguageConfig('en', 2), LanguageConfig('fr', 3)],
-    fallback ?? FallbackConfig.disabled(),
-    validation ?? ValidationConfig.always(),
-    genL10n ?? GenL10nConfig(false),
-  );
 }

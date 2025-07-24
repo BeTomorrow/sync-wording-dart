@@ -3,7 +3,7 @@ import 'package:sync_wording/src/wording/processor/missing_wording_processor.dar
 import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/mock_logger.dart';
+import '../../fixture_and_mocks/mock_logger.dart';
 
 void main() {
   group('MissingWordingProcessor', () {

@@ -2,7 +2,7 @@ import 'package:sync_wording/src/wording/processor/placeholder_mismatch_processo
 import 'package:sync_wording/src/wording/wording.dart';
 import 'package:test/test.dart';
 
-import '../../mocks/mock_logger.dart';
+import '../../fixture_and_mocks/mock_logger.dart';
 
 void main() {
   group('PlaceholderMismatchProcessor', () {
