@@ -69,7 +69,7 @@ SpreadsheetKeyLocation findKeyLocation(
         .expand<RowData>((gridData) => gridData.rowData ?? [])
         .toList();
 
-    for (int rowIndex = config.sheetStartIndex;
+    for (int rowIndex = config.sheetStartIndex - 1;
         rowIndex < rows.length;
         rowIndex++) {
       final row = rows[rowIndex];
