@@ -73,6 +73,11 @@ class SpreadsheetRequestFactory {
       );
     }
 
+    _logger.log(
+      "  ⚠️ Could not find key '$keyToUpdate' in spreadsheet",
+      color: LogColor.red,
+    );
+
     return null;
   }
 
@@ -90,15 +95,21 @@ class SpreadsheetRequestFactory {
       _logger.log("[DELETE] $keyToDelete", color: LogColor.red);
 
       return Request(
-          deleteDimension: DeleteDimensionRequest(
-        range: DimensionRange(
-          sheetId: sheetId,
-          dimension: 'ROWS',
-          startIndex: keyLocation.rowIndex!,
-          endIndex: keyLocation.rowIndex! + 1,
+        deleteDimension: DeleteDimensionRequest(
+          range: DimensionRange(
+            sheetId: sheetId,
+            dimension: 'ROWS',
+            startIndex: keyLocation.rowIndex!,
+            endIndex: keyLocation.rowIndex! + 1,
+          ),
         ),
-      ));
+      );
     }
+
+    _logger.log(
+      "  ⚠️ Could not find key '$keyToDelete' in spreadsheet",
+      color: LogColor.red,
+    );
 
     return null;
   }
@@ -127,6 +138,7 @@ class SpreadsheetRequestFactory {
 
       final language = config.languages
           .firstWhereOrNull((l) => l.column == cellDataIndex + 1);
+
       if (language != null) {
         final entry = wordings[language.locale]?[key];
         if (entry != null) {
