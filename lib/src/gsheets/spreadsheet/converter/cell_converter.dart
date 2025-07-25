@@ -39,7 +39,38 @@ class CellConverter {
 
   String fromWordingEntry(WordingEntry wordingEntry) {
     var value = wordingEntry.value;
-    return value;
+
+    // If no placeholders, return the value as is
+    if (wordingEntry.placeholderCharacs == null ||
+        wordingEntry.placeholderCharacs!.isEmpty) {
+      return value;
+    }
+
+    // Reconstruct placeholders with their types and formats
+    var result = value;
+    for (final charac in wordingEntry.placeholderCharacs!) {
+      final placeholderName = charac.placeholder;
+      final simplePlaceholder = "{$placeholderName}";
+
+      String reconstructedPlaceholder = "{$placeholderName}";
+
+      // Add type if present
+      if (charac.type != null) {
+        reconstructedPlaceholder = "{$placeholderName|${charac.type}";
+
+        // Add format if present
+        if (charac.format != null) {
+          reconstructedPlaceholder += "|${charac.format}";
+        }
+
+        reconstructedPlaceholder += "}";
+      }
+
+      // Replace the simple placeholder with the reconstructed one
+      result = result.replaceAll(simplePlaceholder, reconstructedPlaceholder);
+    }
+
+    return result;
   }
 }
 
