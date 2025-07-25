@@ -8,17 +8,17 @@ const _placeholderRegex =
 const _separator = "|";
 
 /// Main parser class that coordinates the parsing process
-class SpreadsheetParser {
+class CellConverter {
   final PlaceholderExtractor _placeholderExtractor;
   final PlaceholderFormatter _placeholderFormatter;
 
-  SpreadsheetParser({
+  CellConverter({
     PlaceholderExtractor? placeholderExtractor,
     PlaceholderFormatter? placeholderFormatter,
   })  : _placeholderExtractor = placeholderExtractor ?? PlaceholderExtractor(),
         _placeholderFormatter = placeholderFormatter ?? PlaceholderFormatter();
 
-  WordingEntry parse(String rawText) {
+  WordingEntry toWordingEntry(String rawText) {
     try {
       final placeholders = _placeholderExtractor.extractPlaceholders(rawText);
       if (placeholders.isEmpty) {
@@ -35,6 +35,11 @@ class SpreadsheetParser {
       stdout.writeln("Error parsing placeholders from '$rawText' -> Skip");
       return WordingEntry(rawText, null);
     }
+  }
+
+  String fromWordingEntry(WordingEntry wordingEntry) {
+    var value = wordingEntry.value;
+    return value;
   }
 }
 

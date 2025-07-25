@@ -1,14 +1,14 @@
 import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_parser.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/cell_converter.dart';
 import 'package:sync_wording/src/gsheets/spreadsheet/converter/validator.dart';
 import 'package:sync_wording/src/wording/wording.dart';
 
-class SpreadsheetConverter {
-  final _parser = SpreadsheetParser();
+class SpreadsheetExtractor {
+  final _parser = CellConverter();
 
   /// Convert the data set in the spreadsheet in Objects defined by the model
-  Future<Wordings> convertToWordings(
+  Future<Wordings> toWordings(
     Spreadsheet spreadsheet,
     WordingConfig config,
   ) async {
@@ -82,7 +82,7 @@ class SpreadsheetConverter {
       final key = row[keyColumn - 1];
       if (key != null) {
         final value = row[valueColumn - 1];
-        result[key] = _parser.parse(value ?? '');
+        result[key] = _parser.toWordingEntry(value ?? '');
       }
     }
   }

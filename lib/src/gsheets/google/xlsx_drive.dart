@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_converter.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_extractor.dart';
 import 'package:sync_wording/src/gsheets/spreadsheet/request/spreadsheet_request.dart';
 import 'package:sync_wording/src/logger/logger.dart';
 import 'package:sync_wording/src/wording/diff/wording_diff.dart';
@@ -11,7 +11,7 @@ import 'package:sync_wording/src/wording/wording.dart';
 
 class XLSXDrive {
   final SheetsApi _sheetsApi;
-  final SpreadsheetConverter _converter = SpreadsheetConverter();
+  final SpreadsheetExtractor _converter = SpreadsheetExtractor();
   final Logger _logger;
 
   XLSXDrive(AutoRefreshingAuthClient client, Logger logger)
@@ -33,14 +33,14 @@ class XLSXDrive {
   /// Download the wordings from the spreadsheet
   Future<Wordings> downloadWordings(WordingConfig config) async {
     final spreadsheet = await _getSpreadsheet(config);
-    return await _converter.convertToWordings(spreadsheet, config);
+    return await _converter.toWordings(spreadsheet, config);
   }
 
   /// Upload the wordings to the spreadsheet
   Future<void> upload(WordingConfig config, Wordings wordings) async {
     final existingSpreadsheet = await _getSpreadsheet(config);
     final existingsWordings =
-        await _converter.convertToWordings(existingSpreadsheet, config);
+        await _converter.toWordings(existingSpreadsheet, config);
 
     // Detect differences between existing and new wordings
     final (addedKeys, modifiedKeys, removedKeys) =
@@ -55,8 +55,12 @@ class XLSXDrive {
     final requestFactory = SpreadsheetRequestFactory(_logger);
 
     // First : add new keys
-    final addRequest =
-        requestFactory.add(existingSpreadsheet, addedKeys, wordings, config);
+    final addRequest = requestFactory.add(
+      existingSpreadsheet,
+      addedKeys,
+      wordings,
+      config,
+    );
     if (addRequest != null) {
       requests.add(addRequest);
     }

@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:sync_wording/src/config/wording_config.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/cell_converter.dart';
 import 'package:sync_wording/src/gsheets/spreadsheet/helper/spreadsheet_helper.dart';
 import 'package:sync_wording/src/logger/logger.dart';
 import 'package:sync_wording/src/wording/wording.dart';
 
 class SpreadsheetRequestFactory {
   final Logger _logger;
+  final CellConverter _converter = CellConverter();
 
   SpreadsheetRequestFactory(this._logger);
 
@@ -101,7 +103,11 @@ class SpreadsheetRequestFactory {
     return null;
   }
 
-  RowData _rowData(String key, Wordings wordings, WordingConfig config) {
+  RowData _rowData(
+    String key,
+    Wordings wordings,
+    WordingConfig config,
+  ) {
     final numberOfColumns = [
       ...config.languages.map((l) => l.column),
       config.keyColumn,
@@ -122,7 +128,10 @@ class SpreadsheetRequestFactory {
       final language = config.languages
           .firstWhereOrNull((l) => l.column == cellDataIndex + 1);
       if (language != null) {
-        return _cellData(wordings.value(key, language.locale));
+        final entry = wordings[language.locale]?[key];
+        if (entry != null) {
+          return _cellData(_converter.fromWordingEntry(entry));
+        }
       }
 
       return _cellData('');

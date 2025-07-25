@@ -1,17 +1,13 @@
 import 'package:sync_wording/src/config/wording_config.dart';
-import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_converter.dart';
+import 'package:sync_wording/src/gsheets/spreadsheet/converter/spreadsheet_extractor.dart';
 import 'package:test/test.dart';
 
 import '../../fixture_and_mocks/spreadsheet_fixture.dart';
 import '../../fixture_and_mocks/wording_config_fixture.dart';
 
 void main() {
-  group('SpreadsheetConverter', () {
-    late SpreadsheetConverter converter;
-
-    setUp(() {
-      converter = SpreadsheetConverter();
-    });
+  group('SpreadsheetExtractor', () {
+    final SpreadsheetExtractor extractor = SpreadsheetExtractor();
 
     group('convert', () {
       test('should convert spreadsheet with multiple sheets', () async {
@@ -27,7 +23,7 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result.length, 2);
@@ -56,8 +52,8 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
-            spreadsheet, configWithSheetNames);
+        final result =
+            await extractor.toWordings(spreadsheet, configWithSheetNames);
 
         expect(result['en']!.length, 1);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -79,8 +75,8 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
-            spreadsheet, configWithEmptySheetNames);
+        final result =
+            await extractor.toWordings(spreadsheet, configWithEmptySheetNames);
 
         expect(result['en']!.length, 2);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -90,7 +86,7 @@ void main() {
       test('should handle empty spreadsheet', () async {
         final spreadsheet = SpreadsheetFixture.fromSheetWithRows({});
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result.length, 2);
@@ -113,8 +109,8 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
-            spreadsheet, configWithValidation);
+        final result =
+            await extractor.toWordings(spreadsheet, configWithValidation);
 
         // Only rows with 'OK' in column 4 should be included
         expect(result['en']!.length, 2);
@@ -148,8 +144,8 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
-            spreadsheet, configWithAlwaysValidation);
+        final result =
+            await extractor.toWordings(spreadsheet, configWithAlwaysValidation);
 
         expect(result['en']!.length, 3);
         expect(result['fr']!.length, 3);
@@ -172,7 +168,7 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.length, 2);
@@ -193,8 +189,8 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
-            spreadsheet, configWithStartIndex);
+        final result =
+            await extractor.toWordings(spreadsheet, configWithStartIndex);
 
         expect(result['en']!.length, 1);
         expect(result['en']!['welcome']!.value, 'Hello');
@@ -207,7 +203,7 @@ void main() {
           ],
         });
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
@@ -219,7 +215,7 @@ void main() {
           'TestSheet': null,
         });
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
@@ -231,7 +227,7 @@ void main() {
           'TestSheet': [],
         });
 
-        final result = await converter.convertToWordings(
+        final result = await extractor.toWordings(
             spreadsheet, WordingConfigFixture.forTest());
 
         expect(result['en']!.isEmpty, true);
