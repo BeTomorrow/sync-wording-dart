@@ -31,7 +31,7 @@ class ArbToGsheetProcess {
   ) async {
     final client =
         await GoogleAuth().authenticate(config.credentials, httpClient);
-    await XLSXDrive(client, logger).upload(config, wordings);
+    await XLSXDrive(client, logger).uploadWordings(config, wordings);
   }
 
   /// Analyze and log the differences between the existing wordings and the GSheets wordings

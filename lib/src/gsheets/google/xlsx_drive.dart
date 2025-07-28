@@ -37,7 +37,7 @@ class XLSXDrive {
   }
 
   /// Upload the wordings to the spreadsheet
-  Future<void> upload(WordingConfig config, Wordings wordings) async {
+  Future<void> uploadWordings(WordingConfig config, Wordings wordings) async {
     final existingSpreadsheet = await _getSpreadsheet(config);
     final existingsWordings =
         await _converter.toWordings(existingSpreadsheet, config);
