@@ -24,7 +24,8 @@ topics:
   - localization
   - translation
   - wording
-  - googlesheets
+  - l10n
+  - arb
 
 false_secrets:
  - /lib/config/wording_config_loader.dart
