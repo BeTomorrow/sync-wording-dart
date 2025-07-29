@@ -27,9 +27,23 @@ languages:
     # column : 1='A', 2='B', ...
 ```
 
-- Then run `flutter pub run sync_wording`
+## Running
 
-It will ask you to grant access to Google Sheets:
+This tools now accepts 2 modes : download wording from GoogleSheet, or upload local wordings to GoogleSheet.
+
+To download wordings from a GoogleSheet, you can run this command:
+
+```bash
+flutter pub run sync_wording
+```
+
+To upload the local wordings to the GoogleSheet, run this command:
+
+```bash
+flutter pub run sync_wording --upload
+```
+
+You will be asked to grant access to Google Sheets:
 
 ```bash
 > Task :app:downloadWording
@@ -43,7 +57,9 @@ Please open the following address in your browser:
 
 [Authorization Sample]
 
-It will update the wording files: `${output_dir}/intl_en.arb` and `${output_dir}/intl_fr.arb`
+Downloading the wordings will update the wording files: `${output_dir}/intl_en.arb` and `${output_dir}/intl_fr.arb` (in this example)
+
+Uploading the wordings will update the GoogleSheet according to these wording files.
 
 ## Placeholders
 
@@ -164,6 +180,7 @@ This tool supports 2 options:
 
 - **`--config`** : Configuration file path (Optional: defaults to `./wording_config.yaml`)
 - **`--help`** : Display help info
+- **`--upload`** : Run the upload wording process
 
 ## Complete Configuration
 
