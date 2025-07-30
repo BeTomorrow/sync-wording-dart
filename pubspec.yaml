@@ -28,5 +28,5 @@ topics:
   - arb
 
 false_secrets:
- - /lib/config/wording_config_loader.dart
- - /test/config/wording_config_loader_test.dart
+ - /lib/src/config/wording_config_loader.dart
+ - /test/src/config/wording_config_loader_test.dart
