@@ -21,9 +21,9 @@ sheetId: "your.sheet.id"
 output_dir: "lib/localizations"
 languages:
   en:
-    column: 3
+    column: 2
   fr:
-    column: 4
+    column: 3
     # column : 1='A', 2='B', ...
 ```
 
@@ -181,9 +181,21 @@ This tool supports 2 options:
 - **`--help`** : Display help info
 - **`--upload`** : Run the upload wording process
 
-## Complete Configuration
+## Configuration examples
 
-Complete example of a `wording_config.yaml` file:
+Minimal configuration of a `wording_config.yaml` file:
+
+```yaml
+sheetId: "your.sheet.id"
+output_dir: "lib/localizations"
+languages:
+  en:
+    column: 2
+  fr:
+    column: 3
+```
+
+Complete configuration of a `wording_config.yaml` file:
 
 ```yaml
 sheetId: "your.sheet.id"
@@ -195,11 +207,11 @@ sheet_start_index: 2 # (Optional) defaults to 2
 key_column: 1 # (Optional) defaults to 1
 languages:
   en:
-    column: 3
+    column: 2
   fr:
-    column: 4
+    column: 3
 validation: # (Optional)
-  column: 5
+  column: 4
   expected: "OK"
 
 fallback: # (Optional)
