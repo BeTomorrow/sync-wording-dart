@@ -34,13 +34,13 @@ This tools now accepts 2 modes : download wording from GoogleSheet, or upload lo
 To download wordings from a GoogleSheet, you can run this command:
 
 ```bash
-flutter pub run sync_wording
+dart pub run sync_wording
 ```
 
 To upload the local wordings to the GoogleSheet, run this command:
 
 ```bash
-flutter pub run sync_wording --upload
+dart pub run sync_wording --upload
 ```
 
 You will be asked to grant access to Google Sheets:
