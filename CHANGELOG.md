@@ -1,11 +1,16 @@
+## 1.2.0
+
+- Added support for uploading wordings to a Google Sheet with the `--upload` option
+- Added detailed update logs during sync process
+
 ## 1.1.0
 
-- Can define a fallback language in case of missing translations
-- Warns users in case of missing translations or placeholder mismatches
+- Added ability to define a fallback language for missing translations
+- Added warnings for missing translations or placeholder mismatches
 
 ## 1.0.2
 
-- Allows alphanumeric placeholders
+- Added support for alphanumeric placeholders
 
 ## 1.0.1
 
