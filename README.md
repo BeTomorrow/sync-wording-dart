@@ -29,7 +29,7 @@ languages:
 
 ## Running
 
-This tools now accepts 2 modes : download wording from GoogleSheet, or upload local wordings to GoogleSheet.
+This tools accepts 2 modes : download wording from GoogleSheet, or upload local wordings to GoogleSheet.
 
 To download wordings from a GoogleSheet, you can run this command:
 
@@ -49,7 +49,6 @@ You will be asked to grant access to Google Sheets:
 > Task :app:downloadWording
 Please open the following address in your browser:
   https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=...
-
 ```
 
 - Open the URL in your browser
