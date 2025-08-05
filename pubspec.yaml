@@ -21,11 +21,11 @@ dev_dependencies:
   test: ^1.24.0
 
 topics:
-  - localization
+  - google-sheets
   - translation
-  - wording
-  - l10n
   - arb
+  - localization
+  - l10n
 
 false_secrets:
  - /lib/src/config/wording_config_loader.dart
